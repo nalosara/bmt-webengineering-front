@@ -1,6 +1,4 @@
 import './App.css'
-import ProductCard from './components/ProductCard/ProductCard'
-import { Product } from './utils/types'
 import ProductList from './components/ProductList'
 
 function App() {
