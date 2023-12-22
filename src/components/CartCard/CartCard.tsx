@@ -1,19 +1,17 @@
-import { Colors } from "../../constants";
-
 type CartCardProps = {};
 
 const CartCard = (props: CartCardProps) => {
   return (
     <div className="col-12 m-3">
-      <div className="card border-0 shadow-sm w-100">
+      <div className="card border-0 shadow-sm ">
         <div
           className="card-header"
           style={{ backgroundColor: "white", fontWeight: "bold" }}
         >
           Your order
         </div>
-        <div className="card-body">
-          <p className="card-text d-flex align-items-center">
+        <div className="card-body justify-content-center align-items-center">
+          <p className="card-text">
             <div className="row">
               <div className="col">
                 <li className="list-group-item">Product name: BeMyStep</li>
@@ -28,7 +26,7 @@ const CartCard = (props: CartCardProps) => {
               </div>
             </div>
           </p>
-          <a className="btn btn-primary" style={{ backgroundColor: Colors.primary, borderColor: Colors.primary}}>Cancel Order</a>
+          <a className="btn btn-primary" style={{ backgroundColor: "danger", borderColor: "red" }}>Cancel</a>
         </div>
       </div>
     </div>

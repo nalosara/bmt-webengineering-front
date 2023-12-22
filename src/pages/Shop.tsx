@@ -1,13 +1,13 @@
-import ProductList from "../components/ProductList"
+import ProductList from "../components/ProductList";
 
-type Props = {}
+type ShopProps = {};
 
-const Shop = (props: Props) => {
+const Shop = (props: ShopProps) => {
   return (
-    <div className="container-fluid" style={{ marginTop: 100 }}>
-    <ProductList />
+    <div className="container-fluid vw-100" style={{ marginTop: 150, marginBottom: 20 }}>
+      <ProductList />
     </div>
-  )
-}
+  );
+};
 
-export default Shop
+export default Shop;

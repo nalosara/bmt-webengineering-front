@@ -7,8 +7,7 @@ type Props = {
 
 const ProductCard = ({ product }: Props) => {
   return (
-    <div className="col-12 col-md-3 m-3" 
-    style={{ width: 500 }}>
+    <div className="col-12 col-md-3 m-3">
       <div className="card border-0 shadow-sm">
         <div
           className="card-header"
