@@ -1,9 +1,9 @@
 import { Colors } from "../../constants";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-type Props = {};
+type HeaderProps = {};
 
-const Header = (props: Props) => {
+const Header = (props: HeaderProps) => {
   return (
     <nav
       className="navbar navbar-expand-lg fixed-top container-fluid"

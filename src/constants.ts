@@ -1,4 +1,4 @@
-import { Product, User } from "./utils/types";
+import { Product } from "./utils/types";
 
 export enum Colors {
   "primary" = "#004AAD",
@@ -45,11 +45,4 @@ export const productList: Product[] = [
     price: 459.99,
   },
 ];
-
-export const userList: User[] = [
-  {
-    firstName: "Sara",
-    lastName: "Nalo"
-  }
-]
 

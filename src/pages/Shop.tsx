@@ -4,7 +4,7 @@ type Props = {}
 
 const Shop = (props: Props) => {
   return (
-    <div>
+    <div className="container-fluid" style={{ marginTop: 100 }}>
     <ProductList />
     </div>
   )

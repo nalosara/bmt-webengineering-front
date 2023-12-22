@@ -1,8 +1,8 @@
 import { Colors } from "../../constants"
 
-type Props = {}
+type FooterProps = {}
 
-function Footer({}: Props) {
+function Footer({}: FooterProps) {
   return (
     <nav
       className="navbar navbar-expand-lg fixed-bottom container-fluid"

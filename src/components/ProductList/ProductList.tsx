@@ -26,10 +26,14 @@ const ProductList = (props: Props) => {
           ></input>
         </div>
       </div>
-      <div className="row justify-content-center">
-        {products.map((product, i) => (
-          <ProductCard product={product} key={i} />
-        ))}
+      <div className="container-fluid d-flex">
+        <div
+          className="row justify-content-center d-flex"
+        >
+          {products.map((product, i) => (
+            <ProductCard product={product} key={i} />
+          ))}
+        </div>
       </div>
     </>
   );
