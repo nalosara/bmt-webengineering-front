@@ -41,7 +41,7 @@ const Home = (props: HomeProps) => {
                 <img
                   src="src/assets/images/BeMyTECH-logo-cropped.png"
                   width="350"
-                  alt="About Hero"
+                  alt=""
                 />
               </div>
             </div>
