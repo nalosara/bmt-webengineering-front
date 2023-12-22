@@ -18,11 +18,11 @@ const Header = (props: Props) => {
           info@bemytech.ba
         </a>
         <div className="d-flex" style={{ marginRight: 20}}>
-          <a href="#" className="me-2 text-white">
+          <a href="https://www.facebook.com/profile.php?id=100092992320897&mibextid=LQQJ4d" className="me-2 text-white">
             <i className="bi bi-facebook"></i>
 
           </a>
-          <a href="#" className="text-white">
+          <a href="https://www.linkedin.com/company/bemytech/" className="text-white">
             <i className="bi bi-linkedin"></i>
           </a>
         </div>
