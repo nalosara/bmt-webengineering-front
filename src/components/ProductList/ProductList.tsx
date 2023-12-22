@@ -16,8 +16,8 @@ const ProductList = (props: Props) => {
 
   return (
     <>
-      <div className="row">
-        <div className="col-12 col-md-4 mx-3">
+      <div className="row justify-content-center align-items-center">
+        <div className="col-12 col-md-4 mx-3 justify-content-center">
           <input
             type="text"
             className="form-control"
@@ -26,7 +26,7 @@ const ProductList = (props: Props) => {
           ></input>
         </div>
       </div>
-      <div className="row">
+      <div className="row justify-content-center">
         {products.map((product, i) => (
           <ProductCard product={product} key={i} />
         ))}

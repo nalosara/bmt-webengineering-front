@@ -5,3 +5,13 @@ export type Product = {
   quantityInStock: number;
   price: number;
 };
+
+export type User = {
+  firstName: string,
+  lastName: string,
+}
+
+export type OrderedProduct = {
+  product: Product,
+  quantity: number
+}
