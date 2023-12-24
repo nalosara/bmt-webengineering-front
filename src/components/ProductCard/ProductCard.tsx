@@ -1,11 +1,11 @@
 import { Colors } from "../../constants";
 import { Product } from "../../utils/types";
 
-type Props = {
+type ProductProps = {
   product: Product;
 };
 
-const ProductCard = ({ product }: Props) => {
+const ProductCard = ({ product }: ProductProps) => {
   return (
     <div className="col-12 col-md-3 m-3">
       <div className="card border-0 shadow-sm">

@@ -4,10 +4,10 @@ const Login = (props: LoginProps) => {
   return (
     <div className="col-12 justify-content-center align-items-center vw-100">
       <div className="container-fluid">
-        <img src="src/assets/images/BeMyTECH-cropped.png" width="350" alt="" />
+        <img src="src/assets/images/BeMyTECH-cropped.png" width="300" alt="" style={{ marginTop: 100}}/>
       </div>
       <div className="container d-flex justify-content-center align-items-center">
-        <div className="card border-0" style={{ marginTop: 20 }}>
+        <div className="card border-0">
           <form>
             <div className="mb-3">
               <label className="form-label">

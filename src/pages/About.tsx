@@ -1,14 +1,17 @@
-import { Colors } from "../constants";
-
 type AboutProps = {};
 
 const About = (props: AboutProps) => {
   return (
-    <div className="container-fluid p-0">
-      <section
-        className="container-fluid py-5 vw-100"
-        style={{ backgroundColor: Colors.secondary, marginTop: 50 }}
-      >
+    <div
+      className="container-fluid p-0 vw-100"
+      style={{
+        backgroundImage: 'url("src/assets/images/8.png")',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        marginTop: 50
+      }}
+    >
+      <section className="container-fluid py-5 vw-100">
         <div className="container">
           <div className="row align-items-center py-5">
             <div className="col-md-8 text-white">
@@ -27,102 +30,108 @@ const About = (props: AboutProps) => {
               <img
                 src="src/assets/images/Cane_and_box_demo-removebg-preview.png"
                 width="350"
-                alt="About Hero"
+                alt=""
               />
             </div>
           </div>
         </div>
       </section>
-
-      <div className="container-fluid vw-100" style={{ marginTop: 50 }}>
-        <h3>OUR TEAM</h3>
-      </div>
-
-      <div className="team align-items-center vw-100">
-        <div className="row align-items-center py-5 justify-content-center text-center">
-          <div
-            className="col-lg-3 col-md-6 d-flex align-items-stretch ms-auto"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
-            <div className="member">
-              <div className="member-img">
-                <img
-                  src="src/assets/images/stylish-confident-businesswoman-smiling.jpg"
-                  className="img-fluid"
-                  alt=""
-                />
-                <div className="social">
-                  <a href="">
-                    <i className="bi bi-facebook m-2"></i>
-                  </a>
-                  <a href="">
-                    <i className="bi bi-linkedin m-2"></i>
-                  </a>
-                </div>
-              </div>
-              <div className="member-info">
-                <h4>Selma Budnjo</h4>
-              </div>
-            </div>
+      <section className="container-fluid py-5 vw-100">
+        <div className="container-fluid vw-100">
+          <div className="container text-white">
+            <h3>OUR TEAM</h3>
           </div>
 
-          <div
-            className="col-lg-3 col-md-6 d-flex align-items-stretch ms-auto"
-            data-aos="fade-up"
-            data-aos-delay="200"
-          >
-            <div className="member">
-              <div className="member-img">
-                <img
-                  src="src/assets/images/smiling-confident-businesswoman-posing-with-arms-folded.jpg"
-                  className="img-fluid"
-                  alt=""
-                />
-                <div className="social">
-                  <a href="">
-                    <i className="bi bi-facebook m-2"></i>
-                  </a>
-                  <a href="">
-                    <i className="bi bi-linkedin m-2"></i>
-                  </a>
+          <div className="container-fluid vw-100">
+            <div className="row align-items-center py-5 text-center">
+              <div
+                className="col-lg-3 col-md-6 d-flex align-items-stretch ms-auto"
+                data-aos="fade-up"
+                data-aos-delay="100"
+              >
+                <div className="container">
+                  <div className="member-img">
+                    <img
+                      src="src/assets/images/stylish-confident-businesswoman-smiling.jpg"
+                      className="img-fluid shadow"
+                      alt=""
+                      style={{ borderRadius: 15}}
+                    />
+                    <div className="social">
+                      <a href="">
+                        <i className="bi bi-facebook m-2"></i>
+                      </a>
+                      <a href="">
+                        <i className="bi bi-linkedin m-2"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div className="text-black">
+                    <h4>Selma Budnjo</h4>
+                  </div>
                 </div>
               </div>
-              <div className="member-info">
-                <h4>Sara Nalo</h4>
-              </div>
-            </div>
-          </div>
 
-          <div
-            className="col-lg-3 col-md-6 d-flex align-items-stretch ms-auto"
-            style={{ marginRight: 100 }}
-            data-aos="fade-up"
-            data-aos-delay="300"
-          >
-            <div className="member">
-              <div className="member-img">
-                <img
-                  src="src/assets/images/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair.jpg"
-                  className="img-fluid"
-                  alt=""
-                />
-                <div className="social">
-                  <a href="">
-                    <i className="bi bi-facebook m-2"></i>
-                  </a>
-                  <a href="">
-                    <i className="bi bi-linkedin m-2"></i>
-                  </a>
+              <div
+                className="col-lg-3 col-md-6 d-flex align-items-stretch ms-auto"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <div className="container">
+                  <div className="member-img">
+                    <img
+                      src="src/assets/images/smiling-confident-businesswoman-posing-with-arms-folded.jpg"
+                      className="img-fluid shadow"
+                      alt=""
+                      style={{ borderRadius: 15 }}
+                    />
+                    <div className="social">
+                      <a href="">
+                        <i className="bi bi-facebook m-2"></i>
+                      </a>
+                      <a href="">
+                        <i className="bi bi-linkedin m-2"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div className="text-white">
+                    <h4>Sara Nalo</h4>
+                  </div>
                 </div>
               </div>
-              <div className="member-info">
-                <h4>Melisa Mutapcic</h4>
+
+              <div
+                className="col-lg-3 col-md-6 d-flex align-items-stretch ms-auto"
+                style={{ marginRight: 100 }}
+                data-aos="fade-up"
+                data-aos-delay="300"
+              >
+                <div className="container">
+                  <div className="member-img">
+                    <img
+                      src="src/assets/images/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair.jpg"
+                      className="img-fluid shadow"
+                      alt=""
+                      style={{ borderRadius: 15 }}
+                    />
+                    <div className="social">
+                      <a href="">
+                        <i className="bi bi-facebook m-2"></i>
+                      </a>
+                      <a href="">
+                        <i className="bi bi-linkedin m-2"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div className="text-white">
+                    <h4>Melisa Mutapcic</h4>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

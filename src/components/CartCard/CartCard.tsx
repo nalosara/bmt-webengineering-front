@@ -26,7 +26,7 @@ const CartCard = (props: CartCardProps) => {
               </div>
             </div>
           </p>
-          <a className="btn btn-primary" style={{ backgroundColor: "danger", borderColor: "red" }}>Cancel</a>
+          <a className="btn btn-danger">Cancel</a>
         </div>
       </div>
     </div>

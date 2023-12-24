@@ -1,17 +1,21 @@
-import { Colors } from "../constants";
-
 type HomeProps = {};
 
 const Home = (props: HomeProps) => {
   return (
-      <div className="container-fluid p-0">
+      <div className="container-fluid p-0 vw-100"
+      style={{
+        backgroundImage: 'url("src/assets/images/16.png")',
+        backgroundSize: "cover", 
+        backgroundPosition: "center",
+        marginTop: 50
+      }}>
         <section
           className="py-5 container-fluid vw-100"
-          style={{ backgroundColor: Colors.quaternary, marginTop: 50 }}
+          
         >
           <div className="container">
             <div className="row align-items-center py-5">
-              <div className="col-md-8 text-black">
+              <div className="col-md-8 text-white">
                 <h3>Welcome to BeMyTECH!</h3>
                 <p>
                   At BeMyTECH, we believe in a world where technology is
@@ -48,10 +52,10 @@ const Home = (props: HomeProps) => {
           </div>
         </section>
 
-        <section className="container-fluid py-5 vw-100">
-          <div className="container">
-            <h3 style={{ textAlign: "center" }}>FEATURED PRODUCTS</h3>
-            <div className="row align-items-center py-5">
+        <section className="container-fluid vw-100">
+          <div className="container text-white">
+            <h3 style={{ textAlign: "center", marginTop: 30 }}>FEATURED PRODUCTS</h3>
+            <div className="row py-5">
               <div className="col-md-4">
                 <img
                   src="src/assets/images/logo_2.png.png"
@@ -59,7 +63,7 @@ const Home = (props: HomeProps) => {
                   alt="About Hero"
                 />
               </div>
-              <div className="col-md-8 text-black">
+              <div className="col-md-8 text-white">
                 <p>
                   At BeMyStep, Our mission is to provide innovative and
                   accessible technology solutions that improve lives of visually

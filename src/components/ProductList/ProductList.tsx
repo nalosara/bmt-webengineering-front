@@ -2,9 +2,9 @@ import { ChangeEvent, useState } from "react";
 import { productList } from "../../constants";
 import ProductCard from "../ProductCard/ProductCard";
 
-type Props = {};
+type ProductListProps = {};
 
-const ProductList = (props: Props) => {
+const ProductList = (props: ProductListProps) => {
   const [products, setProducts] = useState(productList);
 
   const search = (e: ChangeEvent<HTMLInputElement>) => {
@@ -15,8 +15,8 @@ const ProductList = (props: Props) => {
   };
 
   return (
-    <>
-      <div className="row justify-content-center align-items-center">
+    <div className="container-fluid vw-100">
+      <div className="col-12 row justify-content-center align-items-center">
         <div className="col-12 col-md-4 mx-3 justify-content-center">
           <input
             type="text"
@@ -26,16 +26,16 @@ const ProductList = (props: Props) => {
           ></input>
         </div>
       </div>
-      <div className="container-fluid d-flex">
+      <div className="container-fluid">
         <div
-          className="row justify-content-center d-flex"
+          className="row justify-content-center"
         >
           {products.map((product, i) => (
             <ProductCard product={product} key={i} />
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
