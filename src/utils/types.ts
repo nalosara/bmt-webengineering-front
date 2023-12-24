@@ -1,6 +1,7 @@
 export type Product = {
-   productName: string;
-   description: string;
-   quantityInStock: number;
-   price: number;
-}
+  productName: string;
+  description: string;
+  imageUrl: string,
+  quantityInStock: number;
+  price: number;
+};
