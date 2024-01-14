@@ -1,5 +1,7 @@
 import { Product } from "./utils/types";
 
+export const BASE_URL = 'http://localhost:8080/api'
+
 export enum Colors {
   "primary" = "#004AAD",
   "secondary" = "#38B6FF",
