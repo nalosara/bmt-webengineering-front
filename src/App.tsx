@@ -1,17 +1,28 @@
-import './App.css'
-import ProductCard from './components/ProductCard/ProductCard'
-import { Product } from './utils/types'
-import ProductList from './components/ProductList'
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import { Home, About, Shop, Login, NotFound, ProductPage, Profile } from "./pages"
+import Navbar from "./components/Navbar";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 function App() {
-
   return (
     <>
-    <h2 className='m-2'>Find a product...</h2>
-    <ProductList />
+    <Header />
+    <Navbar />
+    <Footer />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/shop" element={<Shop />} />
+      <Route path="/product/:productName" element={<ProductPage />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
     </>
-  )    
-
+  );
 }
 
-export default App
+export default App;
