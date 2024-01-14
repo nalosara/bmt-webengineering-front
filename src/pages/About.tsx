@@ -7,7 +7,7 @@ const About = (props: AboutProps) => {
         <div className="container">
           <div className="row align-items-center py-5">
             <div className="col-md-8 text-black">
-              <h1>About Us</h1>
+              <h2 style={{ marginBottom: 20 }}>ABOUT US</h2>
               <p>
                 With an application that will be connected to it, our smart
                 device is offered as a suggested solution for those who are
@@ -31,7 +31,7 @@ const About = (props: AboutProps) => {
       <section className="container-fluid py-5 vw-100">
         <div className="container-fluid vw-100">
           <div className="container text-black">
-            <h3>OUR TEAM</h3>
+            <h2>OUR TEAM</h2>
           </div>
 
           <div className="container-fluid vw-100">
@@ -47,7 +47,7 @@ const About = (props: AboutProps) => {
                       src="src/assets/images/stylish-confident-businesswoman-smiling.jpg"
                       className="img-fluid shadow"
                       alt=""
-                      style={{ borderRadius: 15}}
+                      style={{ borderRadius: 40 }}
                     />
                     <div className="social" style={{ marginTop: 20 }}>
                       <a href="">
@@ -75,7 +75,7 @@ const About = (props: AboutProps) => {
                       src="src/assets/images/smiling-confident-businesswoman-posing-with-arms-folded.jpg"
                       className="img-fluid shadow"
                       alt=""
-                      style={{ borderRadius: 15 }}
+                      style={{ borderRadius: 40 }}
                     />
                     <div className="social" style={{ marginTop: 20 }}>
                       <a href="">
@@ -104,7 +104,7 @@ const About = (props: AboutProps) => {
                       src="src/assets/images/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair.jpg"
                       className="img-fluid shadow"
                       alt=""
-                      style={{ borderRadius: 15 }}
+                      style={{ borderRadius: 40 }}
                     />
                     <div className="social" style={{ marginTop: 20 }}>
                       <a href="">

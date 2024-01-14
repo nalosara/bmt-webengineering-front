@@ -37,7 +37,7 @@ export const productList: Product[] = [
     price: 149.99,
   },
   {
-    productName: "X9 Elcestric Wheelchair",
+    productName: "X9 Electric Wheelchair",
     description: "This innovative new design includes an automatic reclining backrest, and automatic lifting leg rests that can work together or independently of each other.",
     imageUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr0lwxYEatK7dtalbVsApV8MY8xBNCYOrPGQ&usqp=CAU",

@@ -3,7 +3,7 @@ type CartCardProps = {};
 const CartCard = (props: CartCardProps) => {
   return (
     <div className="col-12 m-3">
-      <div className="card border-0 shadow-sm ">
+      <div className="card border-0 shadow" style={{ borderRadius: 40 }}>
         <div
           className="card-header"
           style={{ backgroundColor: "white", fontWeight: "bold" }}
