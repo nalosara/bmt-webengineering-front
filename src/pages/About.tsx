@@ -2,19 +2,11 @@ type AboutProps = {};
 
 const About = (props: AboutProps) => {
   return (
-    <div
-      className="container-fluid p-0 vw-100"
-      style={{
-        backgroundImage: 'url("src/assets/images/8.png")',
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        marginTop: 50
-      }}
-    >
+    <div className="container-fluid p-0 vw-100" style={{ marginTop: 50 }}>
       <section className="container-fluid py-5 vw-100">
         <div className="container">
           <div className="row align-items-center py-5">
-            <div className="col-md-8 text-white">
+            <div className="col-md-8 text-black">
               <h1>About Us</h1>
               <p>
                 With an application that will be connected to it, our smart
@@ -38,7 +30,7 @@ const About = (props: AboutProps) => {
       </section>
       <section className="container-fluid py-5 vw-100">
         <div className="container-fluid vw-100">
-          <div className="container text-white">
+          <div className="container text-black">
             <h3>OUR TEAM</h3>
           </div>
 
@@ -57,7 +49,7 @@ const About = (props: AboutProps) => {
                       alt=""
                       style={{ borderRadius: 15}}
                     />
-                    <div className="social">
+                    <div className="social" style={{ marginTop: 20 }}>
                       <a href="">
                         <i className="bi bi-facebook m-2"></i>
                       </a>
@@ -85,7 +77,7 @@ const About = (props: AboutProps) => {
                       alt=""
                       style={{ borderRadius: 15 }}
                     />
-                    <div className="social">
+                    <div className="social" style={{ marginTop: 20 }}>
                       <a href="">
                         <i className="bi bi-facebook m-2"></i>
                       </a>
@@ -94,7 +86,7 @@ const About = (props: AboutProps) => {
                       </a>
                     </div>
                   </div>
-                  <div className="text-white">
+                  <div className="text-black">
                     <h4>Sara Nalo</h4>
                   </div>
                 </div>
@@ -114,7 +106,7 @@ const About = (props: AboutProps) => {
                       alt=""
                       style={{ borderRadius: 15 }}
                     />
-                    <div className="social">
+                    <div className="social" style={{ marginTop: 20 }}>
                       <a href="">
                         <i className="bi bi-facebook m-2"></i>
                       </a>
@@ -123,7 +115,7 @@ const About = (props: AboutProps) => {
                       </a>
                     </div>
                   </div>
-                  <div className="text-white">
+                  <div className="text-black">
                     <h4>Melisa Mutapcic</h4>
                   </div>
                 </div>
