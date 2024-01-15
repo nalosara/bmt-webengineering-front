@@ -1,8 +1,9 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { productList } from "../../constants";
+import { useEffect, useState } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import { Product } from "../../utils/types";
 import { ProductService } from "../../services";
+import { Colors } from "../../constants";
+import { Link } from "react-router-dom";
 
 type ProductListProps = {};
 
@@ -12,10 +13,10 @@ const ProductList = (props: ProductListProps) => {
   const [error, setError] = useState<any>();
 
   //const search = (e: ChangeEvent<HTMLInputElement>) => {
-    //const filteredProducts = productList.filter(product =>
-     // product.productName.toLowerCase().includes(e.target.value.toLowerCase())
-   // );
-    //setProducts(filteredProducts);
+  //const filteredProducts = productList.filter(product =>
+  // product.productName.toLowerCase().includes(e.target.value.toLowerCase())
+  // );
+  //setProducts(filteredProducts);
   //};
 
   useEffect(() => {
@@ -35,13 +36,26 @@ const ProductList = (props: ProductListProps) => {
   return (
     <div className="container-fluid vw-100">
       <div className="col-12 row justify-content-center align-items-center">
-        <div className="col-12 col-md-4 mx-3 justify-content-center">
-          <input
-            type="text"
-            className="form-control"
-            //onChange={search}
-            placeholder="Search for a product..."
-          ></input>
+        <div className="col-12 col-md-4 mx-3">
+          <div className="col">
+            <input
+              type="text"
+              className="form-control"
+              //onChange={search}
+              placeholder="Search for a product..."
+            ></input>
+            <a
+              className="btn btn-primary"
+              style={{
+                backgroundColor: Colors.tertiary,
+                borderColor: Colors.tertiary,
+                marginTop: 20,
+                marginBottom: 20,
+              }}
+            >
+              Add Product
+            </a>
+          </div>
         </div>
       </div>
       {
@@ -70,14 +84,19 @@ const ProductList = (props: ProductListProps) => {
       {
         // If not loading, and not error, show data
         !isLoading && (
-            <div className="container-fluid">
-            <div
-              className="row justify-content-center"
-            >
-              {
-                products.map((product, i) => (
-                    <ProductCard product={product} key={i} />
-                ))
+          <div className="container-fluid">
+            <div className="row justify-content-center">
+              {products.map((product) => (
+                <div key={product.id} className="col-12 col-md-3">
+                  <Link
+                    className=" text-black"
+                    to={`/products/${product.id}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <ProductCard product={product} />
+                  </Link>
+                </div>
+              ))
               }
             </div>
           </div>
