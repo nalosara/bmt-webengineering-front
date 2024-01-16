@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Colors } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-//import { logout } from "../../store/authSlice";
+import { logout } from "../../store/authSlice";
 
 type NavbarProps = {};
 
@@ -71,9 +71,9 @@ const Navbar = (props: NavbarProps) => {
             ) : (
               <li className="nav-item me-5">
                 <a
-                  className="nav-link"
+                  className="nav-link me-5"
                   style={{ color: "red" }}
-                  //onClick={() => dispatch(logout())}
+                  onClick={() => dispatch(logout())}
                 >
                   <strong>LOGOUT</strong>
                 </a>

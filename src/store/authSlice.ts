@@ -57,7 +57,15 @@ const initialState = {
 const authSlice = createSlice({
    name: 'auth',
    initialState,
-   reducers: {},
+   reducers: {
+      logout: (state) => {
+          localStorage.removeItem('userToken') // deletes token from storage
+          state.loading = false
+          state.userInfo = null
+          state.userToken = null
+          state.error = null
+      }
+  },
    extraReducers: (builder) => {
       // registration
       builder.addCase(registerUser.pending, (state) => {
@@ -90,5 +98,5 @@ const authSlice = createSlice({
 })
 
 
-
+export const { logout } = authSlice.actions
 export default authSlice.reducer
