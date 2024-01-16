@@ -31,6 +31,37 @@ const getProductById = async (id: string): Promise<Product | null> => {
   }
 };
 
+const addProduct = async (newProductData: Partial<Product>): Promise<Product | null> => {
+  try {
+    const response: AxiosResponse<Product> = await appAxios.post('/products/add-product', newProductData);
+
+    const newProduct: Product = response.data;
+
+    if (isValidProduct(newProduct)) {
+      console.log('Product added successfully:', newProduct);
+      return newProduct;
+    } else {
+      console.error('Invalid new product data received:', newProduct);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error adding product:', error);
+    throw error;
+  }
+};
+
+const isValidProduct = (product: any): product is Product => {
+  return (
+    typeof product === 'object' &&
+    'name' in product &&
+    'description' in product &&
+    'imageUrl' in product &&
+    'quantityInStock' in product &&
+    'price' in product
+    // Add other necessary checks for your product structure
+  );
+};
+
 const updateProduct = async (id: string, updatedProductData: Partial<Product>): Promise<Product | null> => {
     try {
       const response: AxiosResponse<Product> = await appAxios.put(`/products/${id}`, updatedProductData);
@@ -61,4 +92,4 @@ const deleteProductById = async (id: string): Promise<void> => {
   }
 };
 
-export default { getProducts, getProductById, updateProduct, deleteProductById };
+export default { getProducts, getProductById, addProduct, updateProduct, deleteProductById };

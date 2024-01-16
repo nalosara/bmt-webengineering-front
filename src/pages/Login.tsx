@@ -1,47 +1,83 @@
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "../store"
+import { login } from "../store/authSlice"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+
 type LoginProps = {};
 
+export type LoginFormData = {
+  email: string;
+  password: string;
+}
+
+const schema = yup
+  .object({
+    email: yup.string().email().required(),
+    password: yup.string().min(8).required()
+  })
+  .required()
+
 const Login = (props: LoginProps) => {
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
+    resolver: yupResolver(schema)
+  })
+
+  const { loading, userToken, error } = useSelector((state: RootState) => state.auth)
+  const dispatch = useDispatch<AppDispatch>()
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (userToken) {
+      navigate('/home')
+    }
+  }, [navigate, userToken])
+
+  const onSubmit = (data: LoginFormData) => {
+    dispatch(login(data))
+  }
   return (
     <div className="col-12 justify-content-center align-items-center vw-100">
       <div className="container-fluid">
         <img src="src/assets/images/BeMyTECH-cropped.png" width="300" alt="" style={{ marginTop: 100}}/>
       </div>
+      {
+        error &&
+        <div className="alert alert-danger" role="alert">
+          <h4 className="alert-heading">Unable to render data!</h4>
+          <p>{error}</p>
+          <hr />
+          <p className="mb-0">
+            Something went wrong, please try again.
+          </p>
+        </div>
+      }
       <div className="container d-flex justify-content-center align-items-center">
-        <div className="card border-0">
-          <form>
-            <div className="mb-3">
-              <label className="form-label">
-                <strong>Email:</strong>
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                placeholder="example@email.com"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-              />
-              <div id="emailHelp" className="form-text">
-                We'll never share your email with anyone else.
-              </div>
-            </div>
-            <div className="mb-3">
-              <label className="form-label">
-                <strong>Password:</strong>
-              </label>
-              <input
-                type="password"
-                placeholder="********"
-                className="form-control"
-                id="exampleInputPassword1"
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </form>
+      <div className="card p-2 border-0">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="mb-3">
+            <label className="form-label">Email address</label>
+            <input type="email" className="form-control" {...register("email")} />
+            <div className="form-text">We'll never share your email with anyone else.</div>
+            {errors.email && <small style={{ color: "red" }}>{errors.email.message}</small>}
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Password</label>
+            <input type="password" className="form-control"  {...register("password")} />
+            {errors.password && <small style={{ color: "red" }}>{errors.password.message}</small>}
+          </div>
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? 'Submitting...' : 'Log in'}
+          </button>
+        </form>
+      </div>
         </div>
       </div>
-    </div>
+
   );
 };
 

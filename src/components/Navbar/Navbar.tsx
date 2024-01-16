@@ -1,11 +1,19 @@
 import { Link } from "react-router-dom";
 import { Colors } from "../../constants";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+//import { logout } from "../../store/authSlice";
 
 type NavbarProps = {};
 
 const Navbar = (props: NavbarProps) => {
+  const { userToken } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top" style={{ marginTop: 20}}>
+    <nav
+      className="navbar navbar-expand-lg navbar-light bg-light fixed-top"
+      style={{ marginTop: 20 }}
+    >
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
           <img
@@ -47,14 +55,37 @@ const Navbar = (props: NavbarProps) => {
                 <strong>SHOP</strong>
               </Link>
             </li>
-            <li className="nav-item me-5">
-              <Link className="nav-link" to="/login">
-                <strong>LOGIN</strong>
-              </Link>
-            </li>
+            {!userToken ? (
+              <>
+                <li className="nav-item me-5">
+                  <Link className="nav-link" to="/login">
+                    <strong>LOGIN</strong>
+                  </Link>
+                </li>
+                <li className="nav-item me-5">
+                  <Link className="nav-link" to="/registration">
+                    <strong>REGISTER</strong>
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <li className="nav-item me-5">
+                <a
+                  className="nav-link"
+                  style={{ color: "red" }}
+                  //onClick={() => dispatch(logout())}
+                >
+                  <strong>LOGOUT</strong>
+                </a>
+              </li>
+            )}
           </ul>
         </div>
-        <Link to="/profile" className="btn btn-outline" style={{ color: Colors.primary, border: 'none', marginRight: 30 }}>
+        <Link
+          to="/profile"
+          className="btn btn-outline"
+          style={{ color: Colors.primary, border: "none", marginRight: 30 }}
+        >
           <i className="fas fa-user"></i>
         </Link>
       </div>

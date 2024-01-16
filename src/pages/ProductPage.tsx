@@ -182,7 +182,6 @@ const ProductPage = (props: Props) => {
           <Modal.Title>Edit Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* Edit form */}
           <Form onSubmit={handleEditSubmit}>
             <Form.Group controlId="editName">
               <Form.Label>Name:</Form.Label>
