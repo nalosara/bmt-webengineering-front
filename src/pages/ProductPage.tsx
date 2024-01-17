@@ -110,8 +110,6 @@ const ProductPage = (props: Props) => {
     }
   };
   
-  
-
   return (
     <>
       <div className="vw-100">

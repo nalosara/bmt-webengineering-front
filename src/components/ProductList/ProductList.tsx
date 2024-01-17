@@ -37,17 +37,14 @@ const ProductList = (props: ProductListProps) => {
       const addedProduct = await ProductService.addProduct(newProduct);
 
       if (addedProduct) {
-        // Optionally, you can update the UI or perform other actions after adding
         console.log('Product added successfully:', addedProduct);
       } else {
         console.error('Invalid added product data received:', addedProduct);
-        // Handle the case where the added product data is invalid
       }
     } catch (error) {
-      // Handle errors (e.g., display an error message to the user)
       console.error('Error adding product:', error);
     } finally {
-      setIsAddModalOpen(false); // Close the modal after submission or in case of an error
+      setIsAddModalOpen(false);
     }
   };
 

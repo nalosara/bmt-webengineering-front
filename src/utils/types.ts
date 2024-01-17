@@ -22,7 +22,7 @@ export type Order = {
   userId: string;
   address: string;
   orderDate: Date;
-  products: OrderedProduct[]
+  products: OrderedProduct[];
 }
 
 export type OrderedProduct = {
