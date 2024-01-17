@@ -92,14 +92,7 @@ const ProductPage = (props: Props) => {
   
       // Add logic to handle form submission and update the product
       if (product) {
-        const updatedProduct = await ProductService.updateProduct(product.id, {
-          name: updatedName,
-          description: updatedDescription,
-          imageUrl: updatedImageUrl,
-          quantityInStock: updatedQuantityInStock,
-          price: updatedPrice,
-          // Add other fields as needed
-        });
+        const updatedProduct = await ProductService.updateProduct(product);
   
         if (updatedProduct) {
           // Optionally, you can update the UI or perform other actions after updating

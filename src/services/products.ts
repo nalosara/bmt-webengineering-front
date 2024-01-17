@@ -1,95 +1,55 @@
 import appAxios from "./appAxios";
 import { Product } from "../utils/types";
-import { AxiosResponse } from "axios";
+import { BASE_URL } from "../constants";
 
 const getProducts = async (): Promise<Product[]> => {
-  return appAxios.get(`/products/`).then((response) => {
+  return appAxios.get(`${BASE_URL}/products/`).then((response) => {
     const data = response.data;
     console.log(data);
     return data;
   });
 };
 
-const getProductById = async (id: string): Promise<Product | null> => {
+const getProductById = async (id: string): Promise<Product> => {
+  return appAxios.get(`${BASE_URL}/products/${id}`).then((response) => {
+    const data = response.data;
+    console.log(data);
+    return data;
+  });
+};
+
+const addProduct = async (product: Product): Promise<Product> => {
+  return appAxios
+    .post(`${BASE_URL}/products/add-product`, product)
+    .then((response) => {
+      const data = response.data;
+      console.log("Product ", data, " is added!");
+
+      return data;
+    });
+};
+
+const updateProduct = async (data: Product) => {
   try {
-    const response: AxiosResponse<Product> = await appAxios.get(
-      `/products/${id}`
-    );
-
-    const product: Product = response.data;
-
-    if (product && typeof product === "object" && "name" in product) {
-      console.log("Product:", product);
-      return product;
-    } else {
-      console.error("Invalid product data received:", product);
-      return null;
-    }
+    const response = await appAxios.put(`${BASE_URL}/products/${data.id}`, data);
+    return response.data;
   } catch (error) {
-    console.error("Error fetching product by ID:", error);
-    throw error;
+    console.error('Error updating product:', error);
+    return { error: 'Failed to update product.' };
   }
 };
 
-const addProduct = async (newProductData: Partial<Product>): Promise<Product | null> => {
-  try {
-    const response: AxiosResponse<Product> = await appAxios.post('/products/add-product', newProductData);
-
-    const newProduct: Product = response.data;
-
-    if (isValidProduct(newProduct)) {
-      console.log('Product added successfully:', newProduct);
-      return newProduct;
-    } else {
-      console.error('Invalid new product data received:', newProduct);
-      return null;
-    }
-  } catch (error) {
-    console.error('Error adding product:', error);
-    throw error;
-  }
+const deleteProductById = async (id: string) => {
+  return appAxios.delete(`${BASE_URL}/products/${id}`).then((response) => {
+    const { data } = response;
+    return data;
+  });
 };
 
-const isValidProduct = (product: any): product is Product => {
-  return (
-    typeof product === 'object' &&
-    'name' in product &&
-    'description' in product &&
-    'imageUrl' in product &&
-    'quantityInStock' in product &&
-    'price' in product
-    // Add other necessary checks for your product structure
-  );
+export default {
+  getProducts,
+  getProductById,
+  addProduct,
+  updateProduct,
+  deleteProductById,
 };
-
-const updateProduct = async (id: string, updatedProductData: Partial<Product>): Promise<Product | null> => {
-    try {
-      const response: AxiosResponse<Product> = await appAxios.put(`/products/${id}`, updatedProductData);
-  
-      const updatedProduct: Product = response.data;
-  
-      if (updatedProduct && typeof updatedProduct === "object" && "name" in updatedProduct) {
-        console.log("Product updated successfully:", updatedProduct);
-        return updatedProduct;
-      } else {
-        console.error("Invalid updated product data received:", updatedProduct);
-        return null;
-      }
-    } catch (error) {
-      console.error("Error updating product:", error);
-      throw error;
-    }
-  };
-
-// doesnt work properly
-const deleteProductById = async (id: string): Promise<void> => {
-  try {
-    await appAxios.delete(`/products/${id}`);
-    console.log(`Product with ID ${id} deleted successfully.`);
-  } catch (error) {
-    console.error(`Error deleting product with ID ${id}:`, error);
-    throw error;
-  }
-};
-
-export default { getProducts, getProductById, addProduct, updateProduct, deleteProductById };

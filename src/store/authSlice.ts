@@ -4,7 +4,7 @@ import { RegisterFormData } from '../pages/Registration'
 import { LoginFormData } from '../pages/Login'
 
 export const registerUser = createAsyncThunk(
-   'auth/register',
+   '/auth/register',
    async (data: RegisterFormData, { rejectWithValue }) => {
        try {
            await appAxios.post(
@@ -23,7 +23,7 @@ export const registerUser = createAsyncThunk(
 )
 
 export const login = createAsyncThunk(
-   'auth/login',
+   '/auth/login',
    async (body: LoginFormData, { rejectWithValue }) => {
        try {
            const { data } = await appAxios.post(
@@ -31,7 +31,7 @@ export const login = createAsyncThunk(
                body,
            )
            localStorage.setItem('userToken', data.jwt)
-           return data
+           return data;
        } catch (error: any) {
            // return custom error message from backend if present
            if (error.response && error.response.data.message) {
