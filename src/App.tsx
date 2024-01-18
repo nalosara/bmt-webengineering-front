@@ -32,7 +32,7 @@ function App() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/products/:id" element={<ProductPage />} />
         <Route element={<ProtectedRoute />}>
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:username" element={<Profile />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -3,12 +3,29 @@ import { Colors } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { logout } from "../../store/authSlice";
+import { jwtDecode } from "jwt-decode";
 
 type NavbarProps = {};
 
 const Navbar = (props: NavbarProps) => {
   const { userToken } = useSelector((state: RootState) => state.auth);
+
+  let username;
+
+  if (userToken) {
+    try {
+      const decodedToken = jwtDecode(userToken);
+      console.log("Decoded Token:", decodedToken);
+      username = decodedToken.sub;
+    } catch (error) {
+      console.error("Error decoding token:", error);
+    }
+  } else {
+    console.error("Token is null or undefined. Cannot decode.");
+  }
+
   const dispatch = useDispatch();
+
   return (
     <nav
       className="navbar navbar-expand-lg navbar-light bg-light fixed-top"
@@ -82,7 +99,7 @@ const Navbar = (props: NavbarProps) => {
           </ul>
         </div>
         <Link
-          to="/profile"
+          to={`/profile/${username}`}
           className="btn btn-outline"
           style={{ color: Colors.primary, border: "none", marginRight: 30 }}
         >
