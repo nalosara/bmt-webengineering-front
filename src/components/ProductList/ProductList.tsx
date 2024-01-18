@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import ProductCard from "../ProductCard/ProductCard";
 import { Product } from "../../utils/types";
 import { ProductService } from "../../services";
@@ -13,6 +13,7 @@ const ProductList = (props: ProductListProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<any>();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   const [newProduct, setNewProduct] = useState({
     id: "",
@@ -48,12 +49,19 @@ const ProductList = (props: ProductListProps) => {
     }
   };
 
-  //const search = (e: ChangeEvent<HTMLInputElement>) => {
-  //const filteredProducts = productList.filter(product =>
-  // product.productName.toLowerCase().includes(e.target.value.toLowerCase())
-  // );
-  //setProducts(filteredProducts);
-  //};
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+
+    const searchTerm = e.target.value.toLowerCase();
+
+    if (!searchTerm) {
+      setProducts(products);
+    } else {
+      const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm)
+      );
+      setProducts(filteredProducts);
+    }
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -78,7 +86,7 @@ const ProductList = (props: ProductListProps) => {
             <input
               type="text"
               className="form-control"
-              //onChange={search}
+              onChange={handleSearch}
               placeholder="Search for a product..."
             ></input>
             <a
