@@ -36,7 +36,7 @@ const getOrdersByUsername = async (username: string): Promise<Order[]> => {
 
 const addOrder = async (order: Order): Promise<Order> => {
   return appAxios
-    .post(`${BASE_URL}/order/add-order`, order)
+    .post(`${BASE_URL}/orders/add-order`, order)
     .then((response) => {
       const data = response.data;
       console.log("Order ", data, " is added!");
@@ -47,7 +47,7 @@ const addOrder = async (order: Order): Promise<Order> => {
 
 const updateOrder = async (data: Order) => {
   try {
-    const response = await appAxios.put(`${BASE_URL}/order/${data.id}`, data);
+    const response = await appAxios.put(`${BASE_URL}/orders/${data.id}`, data);
     return response.data;
   } catch (error) {
     console.error('Error updating order:', error);
@@ -56,7 +56,7 @@ const updateOrder = async (data: Order) => {
 };
 
 const deleteOrderById = async (id: string) => {
-  return appAxios.delete(`${BASE_URL}/order/${id}`).then((response) => {
+  return appAxios.delete(`${BASE_URL}/orders/${id}`).then((response) => {
     const { data } = response;
     return data;
   });

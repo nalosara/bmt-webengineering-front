@@ -60,8 +60,8 @@ const Profile = (props: ProfileProps) => {
   }
 
   return (
-    <div className="container-fluid vw-100">
-      <div className="container">
+    <>
+    <div className="container-fluid vw-100" style={{marginTop: 50}}>
         <header>
           <h1>Welcome, { username }</h1>
         </header>
@@ -70,11 +70,13 @@ const Profile = (props: ProfileProps) => {
           orders.
         </p>
       </div>
+    <div className="container-fluid vw-100">
+      
       <div className="container-fluid row">
         {orders.map((order) => (
           <div key={order.id} className="col-12 col-md-3 vw-100">
             <Link
-              className=" text-black"
+              className="text-black"
               to={`/orders/userByUsername/${username}`}
               style={{ textDecoration: "none" }}
             >
@@ -84,6 +86,7 @@ const Profile = (props: ProfileProps) => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

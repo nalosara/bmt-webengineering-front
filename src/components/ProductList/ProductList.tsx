@@ -107,7 +107,7 @@ const ProductList = (props: ProductListProps) => {
       {
         // Handle errors
         error && (
-          <div className="row">
+          <div className="row vw-100">
             <div className="col-12 col-md-3 m-3">
               <div className="alert alert-danger" role="alert">
                 <h4 className="alert-heading">Unable to render data!</h4>
@@ -129,7 +129,7 @@ const ProductList = (props: ProductListProps) => {
                   <Link
                     className=" text-black"
                     to={`/products/${product.id}`}
-                    style={{ textDecoration: "none" }}
+                    style={{ textDecoration: "none", margin: 10 }}
                   >
                     <ProductCard product={product} />
                   </Link>
