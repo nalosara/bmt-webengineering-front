@@ -29,3 +29,10 @@ export type OrderedProduct = {
   product: Product;
   quantity: number;
 }
+
+export type Contact = {
+  email: string,
+  subject: string,
+  message: string,
+  username: string;
+}

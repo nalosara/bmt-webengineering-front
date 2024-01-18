@@ -90,12 +90,12 @@ const Navbar = (props: NavbarProps) => {
             {!userToken ? (
               <>
                 <li className="nav-item me-5">
-                  <Link className="nav-link" to="/login">
+                  <Link className="nav-link" to="/login" style={{ color: Colors.primary}}>
                     <strong>LOGIN</strong>
                   </Link>
                 </li>
                 <li className="nav-item me-5">
-                  <Link className="nav-link" to="/registration">
+                  <Link className="nav-link" to="/registration" style={{ color: Colors.primary}}>
                     <strong>REGISTER</strong>
                   </Link>
                 </li>

@@ -136,11 +136,11 @@ const ProductPage = (props: Props) => {
             style={{ maxWidth: "100%", height: "400px" }}
           />
           <p className="card-text">
-            <li className="list-group-item">{product.description}</li>
+            <li className="list-group-item"><strong>Description: </strong>{product.description}</li>
             <li className="list-group-item">
               {product.quantityInStock > 0 ? "In stock" : "Out of stock"}
             </li>
-            <li className="list-group-item">Price: {product.price}</li>
+            <li className="list-group-item"><strong>Price: </strong> ${product.price}</li>
           </p>
           <a
             className="btn btn-primary"
@@ -149,7 +149,17 @@ const ProductPage = (props: Props) => {
               borderColor: Colors.tertiary,
             }}
           >
-            Order
+            Buy
+          </a>
+          <a
+            className="btn btn-primary"
+            style={{
+              backgroundColor: Colors.tertiary,
+              borderColor: Colors.tertiary,
+              marginLeft: 20
+            }}
+          >
+            Add to cart
           </a>
         </div>
       </div>
