@@ -13,7 +13,6 @@ const ProductList = (props: ProductListProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<any>();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState<string>('');
 
   const [newProduct, setNewProduct] = useState({
     id: "",

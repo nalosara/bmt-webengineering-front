@@ -9,6 +9,7 @@ import {
   NotFound,
   ProductPage,
   Profile,
+  Contact,
 } from "./pages";
 import Navbar from "./components/Navbar";
 import Header from "./components/Header";
@@ -30,6 +31,7 @@ function App() {
         <Route path="/registration" element={<Registration />} />
         <Route path="/about" element={<About />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/products/:id" element={<ProductPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/profile/:username" element={<Profile />} />

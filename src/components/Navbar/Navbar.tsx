@@ -4,11 +4,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { logout } from "../../store/authSlice";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from 'react-router-dom';
 
 type NavbarProps = {};
 
 const Navbar = (props: NavbarProps) => {
   const { userToken } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Dispatch your logout action
+    dispatch(logout());
+
+    // Redirect to the homepage
+    navigate('/');
+  };
 
   let username;
 
@@ -72,6 +82,11 @@ const Navbar = (props: NavbarProps) => {
                 <strong>SHOP</strong>
               </Link>
             </li>
+            <li className="nav-item me-5">
+              <Link className="nav-link" to="/contact">
+                <strong>CONTACT</strong>
+              </Link>
+            </li>
             {!userToken ? (
               <>
                 <li className="nav-item me-5">
@@ -90,7 +105,7 @@ const Navbar = (props: NavbarProps) => {
                 <a
                   className="nav-link me-5"
                   style={{ color: "red" }}
-                  onClick={() => dispatch(logout())}
+                  onClick={handleLogout}
                 >
                   <strong>LOGOUT</strong>
                 </a>
