@@ -9,7 +9,7 @@ export type User = {
 }
 
 export type Product = {
-  id: string;
+  id: string,
   name: string;
   description: string;
   imageUrl: string,
@@ -18,16 +18,12 @@ export type Product = {
 };
 
 export type Order = {
-  id: string;
-  userId: string;
-  address: string;
+  userId: string,
+  username: string,
+  product: Product,
+  quantity: number,
+  address: string,
   orderDate: Date;
-  products: OrderedProduct[];
-}
-
-export type OrderedProduct = {
-  product: Product;
-  quantity: number;
 }
 
 export type Contact = {

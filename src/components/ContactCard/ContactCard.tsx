@@ -3,13 +3,17 @@ import { Contact } from "../../utils/types";
 import { ContactService } from "../../services";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { jwtDecode } from "jwt-decode";
-import { useState } from "react";
+import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { useEffect, useState } from "react";
 
 type ContactProps = {};
 
+interface CustomJwtPayload extends JwtPayload {
+  username?: string;
+}
+
 const ContactCard = (props: ContactProps) => {
-  const token = localStorage.getItem("userToken");
+  const userToken = localStorage.getItem("userToken");
   const [contact, setContact] = useState<Contact>({
     email: "",
     subject: "",
@@ -17,21 +21,24 @@ const ContactCard = (props: ContactProps) => {
     username: "",
   });
 
-  if (token) {
-    try {
-      const decodedToken = jwtDecode(token);
-
-      // Check if decodedToken.sub is defined before assigning
-      if (decodedToken && decodedToken.sub) {
-        contact.username = decodedToken.sub;
-      } else {
-        console.error("Invalid decoded token:", decodedToken);
-        // Handle the case where decodedToken.sub is undefined
+  useEffect(() => {
+    if (userToken) {
+      try {
+        const decodedToken = jwtDecode(userToken);
+        console.log("Decoded Token:", decodedToken);
+  
+        // Access custom claims, e.g., username
+        const username = decodedToken.sub;
+        console.log("Username:", username);
+  
+      } catch (error) {
+        console.error("Error decoding token:", error);
       }
-    } catch (error) {
-      console.error("Error decoding token:", error);
+    } else {
+      console.error("Token is null or undefined. Cannot decode.");
     }
-  }
+  }, [userToken]);
+  
 
   const handleSubmit = async (contact: Contact) => {
     try {

@@ -1,9 +1,9 @@
-import CartCard from "../../components/CartCard";
 import { useState, useEffect } from "react";
 import { Order } from "../../utils/types";
 import { OrderService } from "../../services";
 import { Link, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import OrderCard from "../OrderCard";
 
 type OrderListProps = {};
 
@@ -68,7 +68,7 @@ const OrderList = (props: OrderListProps) => {
             to={`/orders/userByUsername/${username}`}
             style={{ textDecoration: "none" }}
           >
-            <CartCard order={order} />
+            <OrderCard order={order}/>
           </Link>
         </div>
       ))}

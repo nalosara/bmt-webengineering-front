@@ -21,10 +21,12 @@ const Navbar = (props: NavbarProps) => {
   };
 
   let username;
+  let authorities: string | undefined;
 
   if (userToken) {
     try {
       const decodedToken = jwtDecode(userToken);
+      authorities = decodedToken.authorities;
       console.log("Decoded Token:", decodedToken);
       username = decodedToken.sub;
     } catch (error) {

@@ -5,7 +5,6 @@ type ProductProps = {
 };
 
 const ProductCard = ({ product }: ProductProps) => {
-  console.log(product);
   return (
     <>
       <div className="card border-0 shadow" style={{ borderRadius: 40 }}>
@@ -23,11 +22,10 @@ const ProductCard = ({ product }: ProductProps) => {
             style={{ maxWidth: "100%", height: "200px" }}
           />
           <p className="card-text">
-            <li className="list-group-item">{ product.description }</li>
             <li className="list-group-item">
               {product.quantityInStock > 0 ? "In stock" : "Out of stock"}
             </li>
-            <li className="list-group-item">Price: {product.price}</li>
+            <li className="list-group-item"><strong>Price:</strong> ${product.price}</li>
           </p>
         </div>
       </div>

@@ -5,6 +5,9 @@ import { ProductService } from "../../services";
 import { Colors } from "../../constants";
 import { Link } from "react-router-dom";
 import { Modal, Button, Form } from 'react-bootstrap';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { jwtDecode } from "jwt-decode";
 
 type ProductListProps = {};
 
@@ -13,6 +16,24 @@ const ProductList = (props: ProductListProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<any>();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  const userToken = localStorage.getItem('userToken');
+  let decodedToken;
+  let authorities: string | undefined;
+
+  if (userToken) {
+    try {
+      decodedToken = jwtDecode(userToken);
+      authorities = decodedToken.authorities;
+      console.log("Decoded Token:", decodedToken);
+      console.log("Authorities: ", authorities);
+      console.log("username: ", decodedToken.sub)
+    } catch (error) {
+      console.error("Error decoding token:", error);
+    }
+  } else {
+    console.error("Token is null or undefined. Cannot decode.");
+  }
 
   const [newProduct, setNewProduct] = useState({
     id: "",
@@ -38,11 +59,14 @@ const ProductList = (props: ProductListProps) => {
 
       if (addedProduct) {
         console.log('Product added successfully:', addedProduct);
+        toast.success("Product added successfully!");
       } else {
         console.error('Invalid added product data received:', addedProduct);
+        toast.error("Error adding product. Please try again.");
       }
     } catch (error) {
       console.error('Error adding product:', error);
+      toast.error("Error adding product. Please try again.");
     } finally {
       setIsAddModalOpen(false);
     }
@@ -88,7 +112,8 @@ const ProductList = (props: ProductListProps) => {
               onChange={handleSearch}
               placeholder="Search for a product..."
             ></input>
-            <a
+            { userToken && authorities?.includes('ADMIN') && (
+              <a
               className="btn btn-primary"
               style={{
                 backgroundColor: Colors.tertiary,
@@ -100,6 +125,7 @@ const ProductList = (props: ProductListProps) => {
             >
               Add Product
             </a>
+            )}
           </div>
         </div>
       </div>
