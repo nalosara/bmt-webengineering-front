@@ -18,6 +18,7 @@ export type Product = {
 };
 
 export type Order = {
+  id: string,
   userId: string,
   username: string,
   product: Product,

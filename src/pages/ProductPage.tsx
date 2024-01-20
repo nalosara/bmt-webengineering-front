@@ -193,7 +193,6 @@ const ProductPage = (props: Props) => {
   const handlePlaceOrder = async () => {
     try {
       if (userToken && authorities.includes("MEMBER") && product) {
-
         
         const order: Order = {
           userId: decodedToken.sub || "",

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Order } from "../../utils/types";
 import { OrderService } from "../../services";
 import { Link, useParams } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 import OrderCard from "../OrderCard";
 
 type OrderListProps = {};
@@ -13,7 +13,23 @@ const OrderList = (props: OrderListProps) => {
   const [error, setError] = useState<any>();
   const { username } = useParams<{ username?: string }>();
 
-  const token = localStorage.getItem("userToken");
+  const userToken = localStorage.getItem("userToken");
+  let decodedToken: JwtPayload;
+  let authorities: string | undefined;
+
+  if (userToken) {
+    try {
+      decodedToken = jwtDecode(userToken);
+      authorities = decodedToken.authorities;
+      console.log("Decoded Token:", decodedToken);
+      console.log("Authorities: ", authorities);
+      console.log("username: ", decodedToken.sub);
+    } catch (error) {
+      console.error("Error decoding token:", error);
+    }
+  } else {
+    console.error("Token is null or undefined. Cannot decode.");
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,9 +37,9 @@ const OrderList = (props: OrderListProps) => {
 
       try {
         let username;
-        if (token) {
+        if (userToken) {
           try {
-            const decodedToken = jwtDecode(token);
+            const decodedToken = jwtDecode(userToken);
             console.log("Decoded Token:", decodedToken);
             username = decodedToken.sub;
           } catch (error) {
@@ -56,19 +72,34 @@ const OrderList = (props: OrderListProps) => {
     return <p>Loading...</p>;
   }
 
-  if (!orders) {
+  if (!orders || orders.length === 0) {
     return <p className="vw-100">You have not yet ordered anything!</p>;
   }
   return (
-    <div className="container-fluid row">
-      {orders.map((order) => (
+    <div className="container row vw-100 justify-content-center align-items-center">
+      { userToken && authorities.includes('MEMBER') && orders.map((order) => (
         <div key={order.id} className="col-12 col-md-3 vw-100">
           <Link
             className="text-black"
-            to={`/orders/userByUsername/${username}`}
+            to={
+              `/orders/userByUsername/${username}`
+            }
             style={{ textDecoration: "none" }}
           >
-            <OrderCard order={order}/>
+            <OrderCard order={order} />
+          </Link>
+        </div>
+      ))}
+      { userToken && authorities.includes('ADMIN') && orders.map((order) => (
+        <div key={order.id} className="col-12 col-md-3 vw-100">
+          <Link
+            className="text-black"
+            to={
+              `/orders/`
+            }
+            style={{ textDecoration: "none" }}
+          >
+            <OrderCard order={order} />
           </Link>
         </div>
       ))}

@@ -45,16 +45,6 @@ const addOrder = async (order: Order): Promise<Order> => {
     });
 };
 
-const updateOrder = async (data: Order) => {
-  try {
-    const response = await appAxios.put(`${BASE_URL}/orders/${data.id}`, data);
-    return response.data;
-  } catch (error) {
-    console.error('Error updating order:', error);
-    return { error: 'Failed to update order.' };
-  }
-};
-
 const deleteOrderById = async (id: string) => {
   return appAxios.delete(`${BASE_URL}/orders/${id}`).then((response) => {
     const { data } = response;
@@ -62,4 +52,4 @@ const deleteOrderById = async (id: string) => {
   });
 };
 
-export default { getOrders, getOrdersByUserId, getOrdersByUsername, addOrder, updateOrder, deleteOrderById };
+export default { getOrders, getOrdersByUserId, getOrdersByUsername, addOrder, deleteOrderById };
