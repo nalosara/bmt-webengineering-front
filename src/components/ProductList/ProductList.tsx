@@ -25,7 +25,6 @@ const ProductList = (props: ProductListProps) => {
   const userToken = localStorage.getItem("userToken");
   let decodedToken: CustomJwtPayload;
   let authorities: string[] | undefined;
-
   useEffect(() => {
     // Fetch products on component mount
     refetch();

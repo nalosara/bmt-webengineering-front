@@ -1,29 +1,20 @@
 import { useParams } from "react-router-dom";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import OrderList from "../components/OrderList";
 import { useEffect, useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { UserService } from "../services";
-import { jwtDecode } from "jwt-decode";
 import { User } from "../utils/types";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type ProfileProps = {};
 
-const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  password: Yup.string().min(6, "Password must be at least 6 characters"),
-});
-
 const Profile = (props: ProfileProps) => {
-  
   const { username } = useParams<{ username?: string }>();
   const userToken = localStorage.getItem("userToken");
+  const [user, setUser] = useState<User>();
   const [profileFormData, setProfileFormData] = useState({
+    id: user?.id,
     firstName: "",
     lastName: "",
     username: "",
@@ -31,49 +22,27 @@ const Profile = (props: ProfileProps) => {
     password: "",
   });
   const [showEditModal, setShowEditModal] = useState(false);
-  const [initialValues, setInitialValues] = useState<User>({
-    id: "",
-    firstName: "",
-    lastName: "",
-    username: "",
-    userType: "",
-    password: "",
-    email: "",
-  });
+  
+
+  
 
   useEffect(() => {
     const fetchData = async () => {
-      if (userToken) {
-        try {
-          const decodedToken = jwtDecode(userToken);
-          console.log("Decoded Token:", decodedToken);
-
-          // Access custom claims, e.g., username
-          const username = decodedToken.sub;
-          console.log("Username:", username);
-
-          // Fetch user profile data
-          if (username) {
-            const userProfile = await UserService.getUserByUsername(username);
-            console.log("User profile: ", userProfile);
-            if (userProfile) {
-              setProfileFormData({
-                ...profileFormData,
-                firstName: userProfile.firstName || "",
-                lastName: userProfile.lastName || "",
-                username: userProfile.username || "",
-                email: userProfile.email || "",
-                password: "", // You may leave this empty or set it to some default value
-              });
-            } else {
-              console.error("Failed to fetch user profile data");
-            }
-          }
-        } catch (error) {
-          console.error(
-            "Error decoding token or fetching user profile:",
-            error
-          );
+      if (username) {
+        const userInfo = await UserService.getUserByUsername(username);
+        setUser(userInfo);
+        console.log("User profile useffect: ", userInfo.id);
+        if (user) {
+          setProfileFormData({
+            ...profileFormData,
+            firstName: user.firstName || "",
+            lastName: user.lastName || "",
+            username: user.username || "",
+            email: user.email || "",
+            password: "",
+          });
+        } else {
+          console.error("Failed to fetch user profile data");
         }
       } else {
         console.error("Token is null or undefined. Cannot decode.");
@@ -84,6 +53,7 @@ const Profile = (props: ProfileProps) => {
     fetchData();
   }, [userToken, username]);
 
+
   const handleEditProfileClick = () => {
     setShowEditModal(true);
   };
@@ -92,10 +62,66 @@ const Profile = (props: ProfileProps) => {
     setShowEditModal(false);
   };
 
-  const handleEditProfileSubmit = (updatedProfileData: any) => {
-    // Implement logic to update user profile with the new data
-    console.log("Updated Profile Data:", updatedProfileData);
-    setShowEditModal(false); // Close the modal after submission
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      // Extract updated values from form fields
+      const updatedFirstName = (
+        e.currentTarget.elements.namedItem("editFirstName") as HTMLInputElement
+      )?.value!;
+      const updatedLastName = (
+        e.currentTarget.elements.namedItem("editLastName") as HTMLInputElement
+      )?.value!;
+      const updatedEmail = (
+        e.currentTarget.elements.namedItem("editEmail") as HTMLInputElement
+      )?.value!;
+      const updatedPassword = (
+        e.currentTarget.elements.namedItem("editPassword") as HTMLInputElement
+      )?.value!;
+
+      // Check if any required field is missing or invalid
+      if (
+        !updatedFirstName ||
+        !updatedLastName ||
+        !updatedEmail ||
+        !updatedPassword
+      ) {
+        console.error(
+          "Invalid form input. Please fill in all fields with valid values."
+        );
+        return;
+      }
+
+      // Add logic to handle form submission and update the product
+      if (user) {
+        const updatedUser = await UserService.updateUser({
+          ...user,
+          id: user?.id,
+          firstName: updatedFirstName,
+          lastName: updatedLastName,
+          email: updatedEmail,
+          password: updatedPassword,
+        });
+        console.log("updated user: ");
+
+        if (updatedUser) {
+          // Optionally, you can update the UI or perform other actions after updating
+          console.log("User updated successfully:", user);
+          toast.success("User updated successfully!");
+        } else {
+          console.error("Invalid updated user data received:", user);
+          toast.error("Error updating user. Please try again.");
+          // Handle the case where the updated product data is invalid
+        }
+      }
+    } catch (error) {
+      // Handle errors (e.g., display an error message to the user)
+      console.error("Error updating user:", error);
+      toast.error("Error updating user. Please try again.");
+    } finally {
+      setShowEditModal(false); // Close the modal after submission or in case of an error
+    }
   };
 
   return (
@@ -122,89 +148,72 @@ const Profile = (props: ProfileProps) => {
         <OrderList />
       </div>
 
-      {showEditModal && (
-        <Modal show={true} onHide={handleEditModalClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Edit Profile</Modal.Title>
-          </Modal.Header>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleEditProfileSubmit}
-          >
-            {({ handleSubmit }) => (
-              <Form onSubmit={handleSubmit}>
-                <Modal.Body>
-                  <div className="row pb-3">
-                    <label htmlFor="firstName">First name:</label>
-                    <Field
-                      type="text"
-                      name="firstName"
-                      placeholder="Enter first name"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="firstName"
-                      component="div"
-                      className="error"
-                    />
-                  </div>
-                  <div className="row pb-3">
-                    <label htmlFor="lastName">Last name:</label>
-                    <Field
-                      type="text"
-                      name="lastName"
-                      placeholder="Enter last name"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="lastName"
-                      component="div"
-                      className="error"
-                    />
-                  </div>
-                  <div className="row pb-3">
-                    <label htmlFor="email">E-mail:</label>
-                    <Field
-                      type="text"
-                      name="email"
-                      placeholder="Enter e-mail"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="email"
-                      component="div"
-                      className="error"
-                    />
-                  </div>
-                  <div className="row pb-3">
-                    <label htmlFor="password">Password:</label>
-                    <Field
-                      type="password"
-                      name="password"
-                      placeholder="Enter password"
-                      className="form-control"
-                    />
-                    <ErrorMessage
-                      name="password"
-                      component="div"
-                      className="error"
-                    />
-                  </div>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button type="submit" variant="primary" onClick={() => handleSubmit}>
-                    Save Changes
-                  </Button>
-                  <Button variant="secondary" onClick={handleEditModalClose}>
-                    Close
-                  </Button>
-                </Modal.Footer>
-              </Form>
-            )}
-          </Formik>
-        </Modal>
-      )}
+      <Modal show={showEditModal} onHide={handleEditModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Product</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleEditSubmit}>
+            <Form.Group controlId="editFirstName">
+              <Form.Label>First name:</Form.Label>
+              <Form.Control
+                type="text"
+                value={user?.firstName || ""}
+                onChange={(e) =>
+                  setUser((prevUser) => ({
+                    ...prevUser!,
+                    firstName: e.target.value,
+                  }))
+                }
+              />
+            </Form.Group>
+            <Form.Group controlId="editLastName">
+              <Form.Label>Last name:</Form.Label>
+              <Form.Control
+                type="text"
+                value={user?.lastName || ""}
+                onChange={(e) =>
+                  setUser((prevUser) => ({
+                    ...prevUser!,
+                    lastName: e.target.value,
+                  }))
+                }
+              />
+            </Form.Group>
+
+            <Form.Group controlId="editEmail">
+              <Form.Label>E-mail:</Form.Label>
+              <Form.Control
+                type="text"
+                value={user?.email || ""}
+                onChange={(e) =>
+                  setUser((prevUser) => ({
+                    ...prevUser!,
+                    email: e.target.value,
+                  }))
+                }
+              />
+            </Form.Group>
+
+            <Form.Group controlId="editPassword">
+              <Form.Label>Password:</Form.Label>
+              <Form.Control
+                type="password"
+                value={user?.password || ""}
+                onChange={(e) =>
+                  setUser((prevUser) => ({
+                    ...prevUser!,
+                    password: e.target.value,
+                  }))
+                }
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit" style={{ marginTop: 20 }}>
+              Save Changes
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };
