@@ -7,10 +7,17 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import { useDeleteProduct } from "../hooks";
 
 type Props = {};
 
+interface CustomJwtPayload extends JwtPayload {
+  authorities?: string[];
+}
+
 const ProductPage = (props: Props) => {
+  let authorities: string[] | undefined;
+  let decodedToken: CustomJwtPayload;
   const { id } = useParams<{ id?: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,6 +27,8 @@ const ProductPage = (props: Props) => {
   const [orderQuantity, setOrderQuantity] = useState<number>(1);
   const [orderAddress, setOrderAddress] = useState<string>("");
   const navigate = useNavigate();
+
+  const deleteProduct = useDeleteProduct();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,15 +56,12 @@ const ProductPage = (props: Props) => {
 
     fetchData();
   }, [id]);
-
+  
   const userToken = localStorage.getItem("userToken");
-
-  let decodedToken: JwtPayload;
-  let authorities: string | undefined;
 
   if (userToken) {
     try {
-      decodedToken = jwtDecode(userToken);
+      const decodedToken: CustomJwtPayload = jwtDecode(userToken);
       authorities = decodedToken.authorities;
       console.log("Decoded Token:", decodedToken);
       console.log("Authorities: ", authorities);
@@ -75,22 +81,20 @@ const ProductPage = (props: Props) => {
     return <p>The requested product does not exist.</p>;
   }
 
-  const handleDeleteClick = async () => {
+  const handleDeleteClick = async (id: string) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this product?"
     );
-
-    if (confirmDelete) {
+    if(confirmDelete) {
       try {
-        await ProductService.deleteProductById(product.id);
+        await deleteProduct.mutateAsync(id);
         navigate("/shop");
 
-        // Optionally, you can update the UI or perform other actions after deletion
       } catch (error) {
-        // Handle errors (e.g., display an error message to the user)
-        console.error("Error deleting product:", error);
+        console.error("Error deleting order:", error);
       }
     }
+    
   };
 
   const handleEditClick = () => {
@@ -192,8 +196,7 @@ const ProductPage = (props: Props) => {
 
   const handlePlaceOrder = async () => {
     try {
-      if (userToken && authorities.includes("MEMBER") && product) {
-
+      if (userToken && authorities?.includes("MEMBER") && product) {
         const order: Order = {
           id: "",
           userId: decodedToken.sub || "",
@@ -291,7 +294,7 @@ const ProductPage = (props: Props) => {
       </div>
       {userToken && authorities?.includes("ADMIN") && (
         <div className="vw-100">
-          <a className="btn btn-primary btn-danger" onClick={handleDeleteClick}>
+          <a className="btn btn-primary btn-danger" onClick={() => { handleDeleteClick(product.id) }}>
             <i className="bi bi-trash"></i>
           </a>
           <a

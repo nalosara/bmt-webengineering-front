@@ -3,10 +3,14 @@ import { Colors } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { logout } from "../../store/authSlice";
-import { jwtDecode } from "jwt-decode";
-import { useNavigate } from 'react-router-dom';
+import { jwtDecode, JwtPayload } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 type NavbarProps = {};
+
+interface CustomJwtPayload extends JwtPayload {
+  authorities?: string[];
+}
 
 const Navbar = (props: NavbarProps) => {
   const { userToken } = useSelector((state: RootState) => state.auth);
@@ -18,15 +22,15 @@ const Navbar = (props: NavbarProps) => {
     dispatch(logout());
 
     // Redirect to the homepage
-    navigate('/');
+    navigate("/");
   };
 
   let username;
-  let authorities: string | undefined;
+  let authorities: string[] | undefined;
 
   if (userToken) {
     try {
-      const decodedToken = jwtDecode(userToken);
+      const decodedToken: CustomJwtPayload = jwtDecode(userToken);
       authorities = decodedToken.authorities;
       console.log("Decoded Token:", decodedToken);
       username = decodedToken.sub;
@@ -38,15 +42,36 @@ const Navbar = (props: NavbarProps) => {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top" style={{ marginTop: 20 }}>
+    <nav
+      className="navbar navbar-expand-lg navbar-light bg-light fixed-top mt-4"
+      
+    >
       <div className="container-fluid">
         <Link className="navbar-brand" to="/">
-          <img src="src/assets/images/BeMyTECH-logo-cropped.png" alt="" width="120" height="60" style={{ marginLeft: 80 }} />
+          <img
+            src="src/assets/images/BeMyTECH-logo-cropped.png"
+            alt=""
+            width="120"
+            height="60"
+            style={{ marginLeft: 80 }}
+          />
         </Link>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse justify-content-center align-items-center" id="navbarSupportedContent">
+
+        <div
+          className="collapse navbar-collapse justify-content-center align-items-center"
+          id="navbarSupportedContent"
+        >
           <ul className="navbar-nav">
             <li className="nav-item me-5">
               <Link className="nav-link" to="/home">
@@ -71,26 +96,42 @@ const Navbar = (props: NavbarProps) => {
             {!userToken ? (
               <>
                 <li className="nav-item me-5">
-                  <Link className="nav-link" to="/login" style={{ color: Colors.primary }}>
+                  <Link
+                    className="nav-link"
+                    to="/login"
+                    style={{ color: Colors.primary }}
+                  >
                     <strong>LOGIN</strong>
                   </Link>
                 </li>
                 <li className="nav-item me-5">
-                  <Link className="nav-link" to="/registration" style={{ color: Colors.primary }}>
+                  <Link
+                    className="nav-link"
+                    to="/registration"
+                    style={{ color: Colors.primary }}
+                  >
                     <strong>REGISTER</strong>
                   </Link>
                 </li>
               </>
             ) : (
               <li className="nav-item me-5">
-                <a className="nav-link me-5" style={{ color: "red" }} onClick={handleLogout}>
+                <a
+                  className="nav-link me-5"
+                  style={{ color: "red" }}
+                  onClick={handleLogout}
+                >
                   <strong>LOGOUT</strong>
                 </a>
               </li>
             )}
           </ul>
         </div>
-        <Link to={`/profile/${username}`} className="btn btn-outline" style={{ color: Colors.primary, border: "none", marginRight: 30 }}>
+        <Link
+          to={`/profile/${username}`}
+          className="btn btn-outline"
+          style={{ color: Colors.primary, border: "none", marginRight: 30 }}
+        >
           <i className="fas fa-user"></i>
         </Link>
       </div>

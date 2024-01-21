@@ -1,25 +1,33 @@
+import { useNavigate } from "react-router-dom";
 import { Order } from "../../utils/types";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDeleteOrder, useOrdersByUsername } from "../../hooks";
+import { useDeleteOrder } from "../../hooks";
 
 type OrderCardProps = {
   order: Order;
 };
 
 const OrderCard = ({ order }: OrderCardProps) => {
-  let username;
+  const navigate = useNavigate();
 
   const deleteOrder = useDeleteOrder();
-  const { data, error, isLoading, isError, refetch } = useOrdersByUsername(username || "");
 
-  console.log(data);
+  const handleDeleteOrder = (id: string) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to cancel this order?"
+    );
+    if(confirmDelete) {
+      try {
+        deleteOrder.mutate(id, {});
+        toast.success("Order canceled successfully!")
+        navigate("/shop");
+        window.history.back();
 
-  const handleDeleteOrder = async (id: string) => {
-    try {
-      await deleteOrder.mutateAsync(id);
-      refetch();
-    } catch (error) {
-      console.error("Error deleting order:", error);
+      } catch (error) {
+        console.error("Error deleting order:", error);
+        toast.success("Error canceling order!")
+      }
     }
   };
 
@@ -39,7 +47,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
         
           <div style={{ marginRight: "20px" }}>
             <img
-              src={data?.product}
+              src={order.product.imageUrl}
               alt={order.product.name}
               className="img-fluid"
               style={{ maxWidth: "100%", height: "200px" }}
@@ -68,7 +76,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
           </div>
           
         </div>
-        <a className="btn btn-primary btn-danger" onClick={() => {handleDeleteOrder(order.id)}}>
+        <a className="btn btn-primary btn-danger" onClick={() => handleDeleteOrder(order.id)}>
              Cancel order
           </a>
       </div>

@@ -18,8 +18,19 @@ const getUserByUsername = async (username: string): Promise<User> => {
   });
 };
 
+const updateUser = async (data: User) => {
+  try {
+    const response = await appAxios.put(`${BASE_URL}/users/${data.id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating user:', error);
+    return { error: 'Failed to update user.' };
+  }
+};
+
 export default {
     getUsers,
-    getUserByUsername
+    getUserByUsername,
+    updateUser
   };
   

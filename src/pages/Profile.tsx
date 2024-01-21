@@ -1,17 +1,26 @@
 import { useParams } from "react-router-dom";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import OrderList from "../components/OrderList";
 import { useEffect, useState } from "react";
-import { jwtDecode, JwtPayload } from "jwt-decode";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import { UserService } from "../services";
+import { jwtDecode } from "jwt-decode";
+import { User } from "../utils/types";
 
 type ProfileProps = {};
 
-interface CustomJwtPayload extends JwtPayload {
-  username?: string;
-}
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string().min(6, "Password must be at least 6 characters"),
+});
 
 const Profile = (props: ProfileProps) => {
+  
   const { username } = useParams<{ username?: string }>();
   const userToken = localStorage.getItem("userToken");
   const [profileFormData, setProfileFormData] = useState({
@@ -22,6 +31,15 @@ const Profile = (props: ProfileProps) => {
     password: "",
   });
   const [showEditModal, setShowEditModal] = useState(false);
+  const [initialValues, setInitialValues] = useState<User>({
+    id: "",
+    firstName: "",
+    lastName: "",
+    username: "",
+    userType: "",
+    password: "",
+    email: "",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +55,7 @@ const Profile = (props: ProfileProps) => {
           // Fetch user profile data
           if (username) {
             const userProfile = await UserService.getUserByUsername(username);
-            console.log(userProfile);
+            console.log("User profile: ", userProfile);
             if (userProfile) {
               setProfileFormData({
                 ...profileFormData,
@@ -109,91 +127,82 @@ const Profile = (props: ProfileProps) => {
           <Modal.Header closeButton>
             <Modal.Title>Edit Profile</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label>First name:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="firstName"
-                  value={profileFormData.firstName}
-                  onChange={(e) =>
-                    setProfileFormData({
-                      ...profileFormData,
-                      firstName: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Last name:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="lastName"
-                  value={profileFormData.lastName}
-                  onChange={(e) =>
-                    setProfileFormData({
-                      ...profileFormData,
-                      lastName: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Username:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="username"
-                  value={profileFormData.username}
-                  onChange={(e) =>
-                    setProfileFormData({
-                      ...profileFormData,
-                      username: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>E-mail:</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="email"
-                  value={profileFormData.email}
-                  onChange={(e) =>
-                    setProfileFormData({
-                      ...profileFormData,
-                      email: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Password:</Form.Label>
-                <Form.Control
-                  type="password"
-                  name="password"
-                  value={profileFormData.password}
-                  onChange={(e) =>
-                    setProfileFormData({
-                      ...profileFormData,
-                      password: e.target.value,
-                    })
-                  }
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleEditModalClose}>
-              Close
-            </Button>
-            <Button
-              variant="primary"
-              onClick={() => handleEditProfileSubmit(profileFormData)}
-            >
-              Save changes
-            </Button>
-          </Modal.Footer>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={handleEditProfileSubmit}
+          >
+            {({ handleSubmit }) => (
+              <Form onSubmit={handleSubmit}>
+                <Modal.Body>
+                  <div className="row pb-3">
+                    <label htmlFor="firstName">First name:</label>
+                    <Field
+                      type="text"
+                      name="firstName"
+                      placeholder="Enter first name"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="firstName"
+                      component="div"
+                      className="error"
+                    />
+                  </div>
+                  <div className="row pb-3">
+                    <label htmlFor="lastName">Last name:</label>
+                    <Field
+                      type="text"
+                      name="lastName"
+                      placeholder="Enter last name"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="lastName"
+                      component="div"
+                      className="error"
+                    />
+                  </div>
+                  <div className="row pb-3">
+                    <label htmlFor="email">E-mail:</label>
+                    <Field
+                      type="text"
+                      name="email"
+                      placeholder="Enter e-mail"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="email"
+                      component="div"
+                      className="error"
+                    />
+                  </div>
+                  <div className="row pb-3">
+                    <label htmlFor="password">Password:</label>
+                    <Field
+                      type="password"
+                      name="password"
+                      placeholder="Enter password"
+                      className="form-control"
+                    />
+                    <ErrorMessage
+                      name="password"
+                      component="div"
+                      className="error"
+                    />
+                  </div>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button type="submit" variant="primary" onClick={() => handleSubmit}>
+                    Save Changes
+                  </Button>
+                  <Button variant="secondary" onClick={handleEditModalClose}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Form>
+            )}
+          </Formik>
         </Modal>
       )}
     </>

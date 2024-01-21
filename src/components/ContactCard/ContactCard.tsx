@@ -3,14 +3,11 @@ import { Contact } from "../../utils/types";
 import { ContactService } from "../../services";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from "react";
+import { useCreateContact } from "../../hooks";
 
 type ContactProps = {};
-
-interface CustomJwtPayload extends JwtPayload {
-  username?: string;
-}
 
 const ContactCard = (props: ContactProps) => {
   const userToken = localStorage.getItem("userToken");
@@ -20,6 +17,25 @@ const ContactCard = (props: ContactProps) => {
     message: "",
     username: "",
   });
+
+  const createContact = useCreateContact();
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = (values: Contact) => {
+    setSubmitting(true);
+    console.log("THE VALUES ARE ", values);
+    createContact.mutate(values, {
+      onSuccess: () => {
+        setSubmitting(false);
+        toast.success("Message sent successfully!")
+      },
+      onError: (error) => {
+        setSubmitting(false);
+        toast.error("Message sent successfully!")
+        //error.handleGlobally && error.handleGlobally();
+      }
+    });
+  };
 
   useEffect(() => {
     if (userToken) {
@@ -39,24 +55,6 @@ const ContactCard = (props: ContactProps) => {
     }
   }, [userToken]);
   
-
-  const handleSubmit = async (contact: Contact) => {
-    try {
-      // Add logic to handle form submission and add the new product
-      const addedContactForm = await ContactService.addContactForm(contact);
-
-      if (addedContactForm) {
-        console.log("Product added successfully:", addedContactForm);
-        toast.success("Message sent successfully!");
-      } else {
-        console.error("Invalid added product data received:", addedContactForm);
-        toast.error("Error sending message. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error adding product:", error);
-      toast.error("Error sending message. Please try again.");
-    }
-  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
