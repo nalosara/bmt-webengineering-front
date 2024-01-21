@@ -8,13 +8,14 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { jwtDecode } from "jwt-decode";
+import { useProducts } from "../../hooks";
 
 type ProductListProps = {};
 
 const ProductList = (props: ProductListProps) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<any>();
+
+  const { data, error, isLoading, isError, refetch } = useProducts();
+  
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const userToken = localStorage.getItem('userToken');
@@ -72,6 +73,7 @@ const ProductList = (props: ProductListProps) => {
     }
   };
 
+  /*const [products, setProducts ] = useState<Product | null>();
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
 
     const searchTerm = e.target.value.toLowerCase();
@@ -79,26 +81,12 @@ const ProductList = (props: ProductListProps) => {
     if (!searchTerm) {
       setProducts(products);
     } else {
-      const filteredProducts = products.filter((product) =>
+      const filteredProducts = data?.filter((product) =>
         product.name.toLowerCase().includes(searchTerm)
       );
-      setProducts(filteredProducts);
+      setProducts(filteredProducts?);
     }
-  };
-
-  useEffect(() => {
-    setIsLoading(true);
-    ProductService.getProducts()
-      .then((data) => {
-        setProducts(data);
-      })
-      .catch((error) => {
-        setError(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+  };*/
 
   return (
     <>
@@ -109,7 +97,7 @@ const ProductList = (props: ProductListProps) => {
             <input
               type="text"
               className="form-control"
-              onChange={handleSearch}
+              //onChange={handleSearch}
               placeholder="Search for a product..."
             ></input>
             { userToken && authorities?.includes('ADMIN') && (
@@ -138,7 +126,7 @@ const ProductList = (props: ProductListProps) => {
         )
       }
       {
-        // Handle errors
+        /*// Handle errors
         error && (
           <div className="row vw-100">
             <div className="col-12 col-md-3 m-3">
@@ -150,29 +138,25 @@ const ProductList = (props: ProductListProps) => {
               </div>
             </div>
           </div>
-        )
+        )*/
       }
-      {
-        // If not loading, and not error, show data
-        !isLoading && (
-          <div className="container-fluid">
-            <div className="row justify-content-center">
-              {products.map((product) => (
-                <div key={product.id} className="col-12 col-md-3">
-                  <Link
-                    className=" text-black"
-                    to={`/products/${product.id}`}
-                    style={{ textDecoration: "none", margin: 10 }}
-                  >
-                    <ProductCard product={product} />
-                  </Link>
-                </div>
-              ))
-              }
-            </div>
+      {!isLoading && (
+        <div className="container-fluid">
+          <div className="row justify-content-center">
+            {data?.map((product) => (
+              <div key={product.id} className="col-12 col-md-3">
+                <Link
+                  className=" text-black"
+                  to={`/products/${product.id}`}
+                  style={{ textDecoration: "none", margin: 10 }}
+                >
+                  <ProductCard product={product} />
+                </Link>
+              </div>
+            ))}
           </div>
-        )
-      }
+        </div>
+      )}
     </div>
 
     <Modal show={isAddModalOpen} onHide={handleAddModalClose}>

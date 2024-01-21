@@ -12,7 +12,7 @@ const getOrders = async (): Promise<Order[]> => {
 
 const getOrdersByUserId = async (userId: string): Promise<Order[]> => {
   try {
-    const response = await appAxios.get(`/orders/userById/${userId}`);
+    const response = await appAxios.get(`/orders/order-by-id/${userId}`);
     const data = response.data;
     console.log(data);
     return data;
@@ -24,7 +24,7 @@ const getOrdersByUserId = async (userId: string): Promise<Order[]> => {
 
 const getOrdersByUsername = async (username: string): Promise<Order[]> => {
   try {
-    const response = await appAxios.get(`/orders/userByUsername/${username}`);
+    const response = await appAxios.get(`/orders/order-by-username/${username}`);
     const data: Order[] = response.data;
     console.log(data);
     return data;

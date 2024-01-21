@@ -1,35 +1,28 @@
-import { useNavigate } from "react-router-dom";
-import { OrderService } from "../../services";
 import { Order } from "../../utils/types";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDeleteOrder, useOrdersByUsername } from "../../hooks";
 
 type OrderCardProps = {
   order: Order;
 };
 
 const OrderCard = ({ order }: OrderCardProps) => {
-  const navigate = useNavigate();
+  let username;
 
-  const handleDeleteClick = async () => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this product?"
-    );
+  const deleteOrder = useDeleteOrder();
+  const { data, error, isLoading, isError, refetch } = useOrdersByUsername(username || "");
 
-    if (confirmDelete) {
-      try {
-        await OrderService.deleteOrderById(order.id);
-        toast.success("Order canceled successfully")
-        navigate(`/profile/${order.username}`);
+  console.log(data);
 
-        
-      } catch (error) {
-        // Handle errors (e.g., display an error message to the user)
-        console.error("Error deleting product:", error);
-        toast.error("Error canceling order!")
-      }
+  const handleDeleteOrder = async (id: string) => {
+    try {
+      await deleteOrder.mutateAsync(id);
+      refetch();
+    } catch (error) {
+      console.error("Error deleting order:", error);
     }
   };
+
   return (
     <>
       <div
@@ -46,7 +39,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
         
           <div style={{ marginRight: "20px" }}>
             <img
-              src={order.product.imageUrl}
+              src={data?.product}
               alt={order.product.name}
               className="img-fluid"
               style={{ maxWidth: "100%", height: "200px" }}
@@ -75,7 +68,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
           </div>
           
         </div>
-        <a className="btn btn-primary btn-danger" onClick={handleDeleteClick}>
+        <a className="btn btn-primary btn-danger" onClick={() => {handleDeleteOrder(order.id)}}>
              Cancel order
           </a>
       </div>

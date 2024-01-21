@@ -5,6 +5,7 @@ type ProductProps = {
 };
 
 const ProductCard = ({ product }: ProductProps) => {
+  
   return (
     <>
       <div className="card border-0 shadow" style={{ borderRadius: 40 }}>

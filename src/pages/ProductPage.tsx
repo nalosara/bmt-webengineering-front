@@ -193,8 +193,9 @@ const ProductPage = (props: Props) => {
   const handlePlaceOrder = async () => {
     try {
       if (userToken && authorities.includes("MEMBER") && product) {
-        
+
         const order: Order = {
+          id: "",
           userId: decodedToken.sub || "",
           username: decodedToken.sub || "",
           product: product,
@@ -372,7 +373,6 @@ const ProductPage = (props: Props) => {
         </Modal.Body>
       </Modal>
 
-      {/* Order modal */}
       {/* Order Modal */}
       <Modal show={isOrderModalOpen} onHide={handleOrderModalClose}>
         <Modal.Header closeButton>
