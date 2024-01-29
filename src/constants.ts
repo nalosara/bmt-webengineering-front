@@ -1,4 +1,6 @@
-export const BASE_URL = 'bmtwebshop-3a305a901ea3.herokuapp.com/api'
+export const BASE_URL = 'https://bmtwebshop-3a305a901ea3.herokuapp.com/api';
+
+
 
 export enum Colors {
   "primary" = "#004AAD",
