@@ -96,7 +96,6 @@ const ProductList = ({}: ProductListProps) => {
 
   const handleSubmit = (values: Product) => {
     if (values.quantityInStock >= 0 && values.price > 0) {
-      toast.success("tu sam");
       setSubmitting(true);
   
       createProduct.mutate(values, {
@@ -106,7 +105,6 @@ const ProductList = ({}: ProductListProps) => {
             values: values,
           };
           sendJsonMessage(newProductMessage);
-          toast.success("success");
           setSubmitting(false);
           handleAddModalClose();
         },
@@ -125,6 +123,7 @@ const ProductList = ({}: ProductListProps) => {
       console.log("WebSocket connection established.");
     },
     onMessage: (m) => {
+      toast.success("getting a new message");
       try {
         const newMsg = JSON.parse(m.data);
         console.log(newMsg);
