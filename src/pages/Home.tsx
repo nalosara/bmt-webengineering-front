@@ -31,7 +31,7 @@ const Home = ({}: HomeProps) => {
             </div>
             <div className="col-md-4">
               <img
-                src="src/assets/images/BeMyTECH-logo-cropped.png"
+                src="dist/assets/images/BeMyTECH-logo-cropped.png"
                 width="350"
                 alt=""
               />
@@ -48,7 +48,7 @@ const Home = ({}: HomeProps) => {
           <div className="row py-5">
             <div className="col-md-4">
               <img
-                src="src/assets/images/logo_2.png.png"
+                src="dist/assets/images/logo_2.png.png"
                 width="250"
                 alt="About Hero"
               />

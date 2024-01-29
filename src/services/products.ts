@@ -1,12 +1,8 @@
 import appAxios from "./appAxios";
 import { Product } from "../utils/types";
-import { BASE_URL } from "../constants";
 
 const getProducts = async (): Promise<Product[]> => {
-  console.log("base url", BASE_URL)
   return appAxios.get(`/products/`).then((response) => {
-    
-
     const data = response.data;
     console.log(data);
     return data;

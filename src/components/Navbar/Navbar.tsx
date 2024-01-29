@@ -42,7 +42,7 @@ const NavbarComponent = ({}: NavbarProps) => {
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light" fixed="top" className="mt-4">
       <Navbar.Brand as={Link} to="/">
         <img
-          src="src/assets/images/BeMyTECH-logo-cropped.png"
+          src="dist/assets/images/BeMyTECH-logo-cropped.png"
           alt=""
           width="120"
           height="60"

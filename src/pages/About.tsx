@@ -20,7 +20,7 @@ const About = ({}: AboutProps) => {
             </div>
             <div className="col-md-4">
               <img
-                src="src/assets/images/Cane_and_box_demo-removebg-preview.png"
+                src="dist/assets/images/Cane_and_box_demo-removebg-preview.png"
                 width="350"
                 alt=""
               />
@@ -41,7 +41,7 @@ const About = ({}: AboutProps) => {
             <div className="container">
               <div className="member-img">
                 <img
-                  src="src/assets/images/stylish-confident-businesswoman-smiling.jpg"
+                  src="dist/assets/images/stylish-confident-businesswoman-smiling.jpg"
                   className="img-fluid shadow"
                   alt=""
                   style={{ borderRadius: 40 }}
@@ -61,7 +61,7 @@ const About = ({}: AboutProps) => {
             <div className="container">
               <div className="member-img">
                 <img
-                  src="src/assets/images/smiling-confident-businesswoman-posing-with-arms-folded.jpg"
+                  src="dist/assets/images/smiling-confident-businesswoman-posing-with-arms-folded.jpg"
                   className="img-fluid shadow"
                   alt=""
                   style={{ borderRadius: 40 }}
@@ -82,7 +82,7 @@ const About = ({}: AboutProps) => {
             <div className="container">
               <div className="member-img">
                 <img
-                  src="src/assets/images/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair.jpg"
+                  src="dist/assets/images/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair.jpg"
                   className="img-fluid shadow"
                   alt=""
                   style={{ borderRadius: 40 }}

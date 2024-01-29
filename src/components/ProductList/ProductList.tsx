@@ -27,6 +27,7 @@ const ProductList = ({}: ProductListProps) => {
   let authorities: string[] | undefined;
 
   const socketUrl = `wss://bmtwebshop-3a305a901ea3.herokuapp.com/websocket?token=${userToken}`;
+  //const socketUrl = `ws://localhost:8080/websocket?token=${userToken}`;
   const { sendJsonMessage } = useWebSocket(socketUrl);
   
   useEffect(() => {
