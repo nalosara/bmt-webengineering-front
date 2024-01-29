@@ -16,7 +16,7 @@ interface CustomJwtPayload extends JwtPayload {
   authorities?: string[];
 }
 
-const ProductList = (props: ProductListProps) => {
+const ProductList = ({}: ProductListProps) => {
   const { data, error, isLoading, isError, refetch } = useProducts();
   const createProduct = useCreateProduct();
   const [product, setProduct] = useState<Product | undefined>(undefined);

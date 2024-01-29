@@ -11,7 +11,7 @@ interface CustomJwtPayload extends JwtPayload {
   authorities?: string[];
 }
 
-const OrderList = (props: OrderListProps) => {
+const OrderList = ({}: OrderListProps) => {
   const [orderByUsername, setOrderByUsername] = useState<Order[]>([]);
   const { data: orders, error, isLoading, isError, refetch } = useOrders();
   const [user, setUser] = useState<User | undefined>(undefined);

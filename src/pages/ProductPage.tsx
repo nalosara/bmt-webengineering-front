@@ -15,7 +15,7 @@ interface CustomJwtPayload extends JwtPayload {
   authorities?: string[];
 }
 
-const ProductPage = (props: Props) => {
+const ProductPage = ({}: Props) => {
   let authorities: string[] | undefined;
   const { id } = useParams<{ id?: string }>();
   const [product, setProduct] = useState<Product | null>(null);

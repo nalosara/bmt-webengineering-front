@@ -1,6 +1,6 @@
 type AboutProps = {};
 
-const About = (props: AboutProps) => {
+const About = ({}: AboutProps) => {
   return (
     <div className="container-fluid p-0 vw-100" style={{ marginTop: 50 }}>
       <section className="container-fluid py-5">

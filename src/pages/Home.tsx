@@ -1,7 +1,7 @@
 
 type HomeProps = {};
 
-const Home = (props: HomeProps) => {
+const Home = ({}: HomeProps) => {
   return (
     <div
       className="container-fluid p-0 vw-100"

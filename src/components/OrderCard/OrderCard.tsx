@@ -19,7 +19,6 @@ interface CustomJwtPayload extends JwtPayload {
 
 const OrderCard = ({ order }: OrderCardProps) => {
   const userToken = localStorage.getItem("userToken");
-  let decodedToken: CustomJwtPayload;
   let authorities: string[] | undefined;
   const [user, setUser] = useState<User | undefined>(undefined);
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import ContactCard from "../components/ContactCard";
 
 type ContactProps = {};
 
-const Contact = (props: ContactProps) => {
+const Contact = ({}: ContactProps) => {
   return (
     <div className="col-12 justify-content-center align-items-center vw-100">
       <div className="container-fluid">

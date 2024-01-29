@@ -11,7 +11,7 @@ import { useUpdateUser } from "../hooks";
 
 type ProfileProps = {};
 
-const Profile = (props: ProfileProps) => {
+const Profile = ({}: ProfileProps) => {
   const { username } = useParams<{ username?: string }>();
   const userToken = localStorage.getItem("userToken");
   const [user, setUser] = useState<User | undefined>(undefined);
