@@ -96,6 +96,7 @@ const ProductList = ({}: ProductListProps) => {
 
   const handleSubmit = (values: Product) => {
     if (values.quantityInStock >= 0 && values.price > 0) {
+      toast.success("tu sam");
       setSubmitting(true);
   
       createProduct.mutate(values, {
@@ -105,6 +106,7 @@ const ProductList = ({}: ProductListProps) => {
             values: values,
           };
           sendJsonMessage(newProductMessage);
+          toast.success("success");
           setSubmitting(false);
           handleAddModalClose();
         },
