@@ -2,14 +2,14 @@ import { Colors } from "../../constants";
 import { Contact } from "../../utils/types";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-//import { jwtDecode } from 'jwt-decode';
-import { useState } from "react";
+import { jwtDecode } from 'jwt-decode';
+import { useEffect, useState } from "react";
 import { useCreateContact } from "../../hooks";
 
 type ContactProps = {};
 
 const ContactCard = ({}: ContactProps) => {
-  //const userToken = localStorage.getItem("userToken");
+  const userToken = localStorage.getItem("userToken");
   const [contact, setContact] = useState<Contact>({
     email: "",
     subject: "",
@@ -39,7 +39,7 @@ const ContactCard = ({}: ContactProps) => {
       }
     });
   };
-/*
+
   useEffect(() => {
     if (userToken) {
       try {
@@ -52,7 +52,7 @@ const ContactCard = ({}: ContactProps) => {
     } else {
       console.error("Token is null or undefined. Cannot decode.");
     }
-  }, [userToken]);*/
+  }, [userToken]);
   
 
   const handleInputChange = (
