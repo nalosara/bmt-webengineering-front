@@ -26,7 +26,7 @@ const ProductList = ({}: ProductListProps) => {
   let decodedToken: CustomJwtPayload;
   let authorities: string[] | undefined;
 
-  const socketUrl = `ws://bmtwebshop-3a305a901ea3.herokuapp.com/websocket?token=${userToken}`;
+  const socketUrl = `wss://bmtwebshop-3a305a901ea3.herokuapp.com/websocket?token=${userToken}`;
   const { sendJsonMessage } = useWebSocket(socketUrl);
   
   useEffect(() => {
