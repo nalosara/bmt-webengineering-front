@@ -55,7 +55,7 @@ function Registration({}: RegistrationProps) {
   return (
     <div className="col-12 justify-content-center align-items-center vw-100">
       <div className="container-fluid">
-        <img src="dist/assets/images/BeMyTECH-cropped.png" width="300" alt="" style={{ marginTop: 100}}/>
+        <img src="public/images/BeMyTECH-cropped.png" width="300" alt="" style={{ marginTop: 100}}/>
       </div>
       {error && (
         <div className="alert alert-danger" role="alert">

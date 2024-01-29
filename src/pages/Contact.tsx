@@ -7,7 +7,7 @@ const Contact = ({}: ContactProps) => {
     <div className="col-12 justify-content-center align-items-center vw-100">
       <div className="container-fluid">
         <img
-          src="dist/assets/images/BeMyTECH-cropped.png"
+          src="/images/BeMyTECH-cropped.png"
           width="300"
           alt=""
           style={{ marginTop: 100 }}
