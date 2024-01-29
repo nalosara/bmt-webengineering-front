@@ -7,14 +7,11 @@ export const configureAxiosInterceptors = () => {
     
         if (userToken) {
             const token = `Bearer ${userToken}`;
-            console.log('token:', token);
             config.headers.Authorization = token;
         } else {
             console.warn('No userToken found in localStorage.');
         }
     
-        console.log("Request config:", config);
         return config;
     });
 };
-

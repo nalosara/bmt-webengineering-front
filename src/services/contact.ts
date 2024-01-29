@@ -15,7 +15,7 @@ const addContactForm = async (contact: Contact): Promise<Contact> => {
       .post(`${BASE_URL}/contact-forms/add-contact-form`, contact)
       .then((response) => {
         const data = response.data;
-        console.log("Contact form ", data, " is added!");
+        console.log("Contact form is added!");
   
         return data;
       });

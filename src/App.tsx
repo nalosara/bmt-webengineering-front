@@ -11,7 +11,7 @@ import {
   Profile,
   Contact,
 } from "./pages";
-import Navbar from "./components/Navbar";
+import NavbarComponent from "./components/Navbar";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./utils/ProtectedRoute";
@@ -20,11 +20,12 @@ import { configureAxiosInterceptors } from "./services/appAxios.interceptors";
 
 function App() {
   configureAxiosInterceptors();
+
   return (
     <>
     <ToastContainer />
       <Header />
-      <Navbar />
+      <NavbarComponent />
       <Footer />
       <Routes>
         <Route path="/" element={<Home />} />

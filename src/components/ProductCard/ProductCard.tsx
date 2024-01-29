@@ -8,6 +8,12 @@ const ProductCard = ({ product }: ProductProps) => {
   return (
     <>
       <div className="card border-0 shadow" style={{ borderRadius: 40 }}>
+      <img
+            src={ product.imageUrl }
+            alt={ product.name }
+            className="img-fluid"
+            style={{ maxWidth: "100%", height: "200px" }}
+          />
         <div
           className="card-header"
           style={{ backgroundColor: "white", fontWeight: "bold" }}
@@ -15,12 +21,7 @@ const ProductCard = ({ product }: ProductProps) => {
           { product.name }
         </div>
         <div className="card-body">
-          <img
-            src={ product.imageUrl }
-            alt={ product.name }
-            className="img-fluid"
-            style={{ maxWidth: "100%", height: "200px" }}
-          />
+          
           <p className="card-text">
             <li className="list-group-item">
               {product.quantityInStock > 0 ? "In stock" : "Out of stock"}

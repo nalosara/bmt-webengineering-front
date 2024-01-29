@@ -6,13 +6,15 @@ import { UserService } from "../services";
 import { User } from "../utils/types";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import bcrypt from "bcryptjs";
+import { useUpdateUser } from "../hooks";
 
 type ProfileProps = {};
 
 const Profile = (props: ProfileProps) => {
   const { username } = useParams<{ username?: string }>();
   const userToken = localStorage.getItem("userToken");
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | undefined>(undefined);
   const [profileFormData, setProfileFormData] = useState({
     id: user?.id,
     firstName: "",
@@ -22,37 +24,26 @@ const Profile = (props: ProfileProps) => {
     password: "",
   });
   const [showEditModal, setShowEditModal] = useState(false);
-  
 
-  
+  const updateUser = useUpdateUser();
 
   useEffect(() => {
     const fetchData = async () => {
       if (username) {
-        const userInfo = await UserService.getUserByUsername(username);
-        setUser(userInfo);
-        console.log("User profile useffect: ", userInfo.id);
-        if (user) {
-          setProfileFormData({
-            ...profileFormData,
-            firstName: user.firstName || "",
-            lastName: user.lastName || "",
-            username: user.username || "",
-            email: user.email || "",
-            password: "",
-          });
-        } else {
-          console.error("Failed to fetch user profile data");
+        try {
+          const fetchedUser = await UserService.getUserByUsername(username);
+          setUser(fetchedUser || undefined);
+
+        } catch (error) {
+          console.error("Error fetching user profile data:", error);
         }
       } else {
         console.error("Token is null or undefined. Cannot decode.");
       }
     };
 
-    // Call the fetchData function
     fetchData();
   }, [userToken, username]);
-
 
   const handleEditProfileClick = () => {
     setShowEditModal(true);
@@ -66,7 +57,6 @@ const Profile = (props: ProfileProps) => {
     e.preventDefault();
 
     try {
-      // Extract updated values from form fields
       const updatedFirstName = (
         e.currentTarget.elements.namedItem("editFirstName") as HTMLInputElement
       )?.value!;
@@ -80,47 +70,42 @@ const Profile = (props: ProfileProps) => {
         e.currentTarget.elements.namedItem("editPassword") as HTMLInputElement
       )?.value!;
 
-      // Check if any required field is missing or invalid
-      if (
-        !updatedFirstName ||
-        !updatedLastName ||
-        !updatedEmail ||
-        !updatedPassword
-      ) {
+      if (!updatedFirstName || !updatedLastName || !updatedEmail) {
         console.error(
           "Invalid form input. Please fill in all fields with valid values."
         );
         return;
       }
 
-      // Add logic to handle form submission and update the product
+      let hashedPassword = updatedPassword;
+
+      if (updatedPassword !== user?.password) {
+        hashedPassword = await bcrypt.hash(updatedPassword, 10);
+      }
+
       if (user) {
-        const updatedUser = await UserService.updateUser({
+        const updatedUser = await updateUser.mutateAsync({
           ...user,
           id: user?.id,
           firstName: updatedFirstName,
           lastName: updatedLastName,
           email: updatedEmail,
-          password: updatedPassword,
+          password: hashedPassword,
         });
-        console.log("updated user: ");
 
         if (updatedUser) {
-          // Optionally, you can update the UI or perform other actions after updating
           console.log("User updated successfully:", user);
           toast.success("User updated successfully!");
         } else {
           console.error("Invalid updated user data received:", user);
           toast.error("Error updating user. Please try again.");
-          // Handle the case where the updated product data is invalid
         }
       }
     } catch (error) {
-      // Handle errors (e.g., display an error message to the user)
       console.error("Error updating user:", error);
       toast.error("Error updating user. Please try again.");
     } finally {
-      setShowEditModal(false); // Close the modal after submission or in case of an error
+      setShowEditModal(false);
     }
   };
 
@@ -128,7 +113,7 @@ const Profile = (props: ProfileProps) => {
     <>
       <div
         className="container-fluid vw-100"
-        style={{ marginTop: 150, marginBottom: 20 }}
+        style={{ marginTop: 150, marginBottom: 50 }}
       >
         <a
           className="btn btn-primary btn-success"
@@ -140,8 +125,9 @@ const Profile = (props: ProfileProps) => {
           <h1>Welcome, {username}</h1>
         </header>
         <p>
-          Here, you can view and manage your account information, and check
-          orders.
+          {user?.userType.includes("ADMIN")
+            ? "Here, you can view a list of all orders from all users."
+            : "Here, you can view and manage your account information, and check your orders."}
         </p>
       </div>
       <div className="container-fluid vw-100">
@@ -180,7 +166,6 @@ const Profile = (props: ProfileProps) => {
                 }
               />
             </Form.Group>
-
             <Form.Group controlId="editEmail">
               <Form.Label>E-mail:</Form.Label>
               <Form.Control
@@ -194,7 +179,6 @@ const Profile = (props: ProfileProps) => {
                 }
               />
             </Form.Group>
-
             <Form.Group controlId="editPassword">
               <Form.Label>Password:</Form.Label>
               <Form.Control

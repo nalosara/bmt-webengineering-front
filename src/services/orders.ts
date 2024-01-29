@@ -3,7 +3,7 @@ import { Order } from "../utils/types";
 import { BASE_URL } from "../constants";
 
 const getOrders = async (): Promise<Order[]> => {
-  return appAxios.get(`/orders/`).then((response) => {
+  return appAxios.get(`${BASE_URL}/orders/`).then((response) => {
     const data = response.data;
     console.log(data);
     return data;
@@ -12,7 +12,7 @@ const getOrders = async (): Promise<Order[]> => {
 
 const getOrdersByUserId = async (userId: string): Promise<Order[]> => {
   try {
-    const response = await appAxios.get(`/orders/order-by-id/${userId}`);
+    const response = await appAxios.get(`${BASE_URL}/orders/order-by-id/${userId}`);
     const data = response.data;
     console.log(data);
     return data;
@@ -24,7 +24,7 @@ const getOrdersByUserId = async (userId: string): Promise<Order[]> => {
 
 const getOrdersByUsername = async (username: string): Promise<Order[]> => {
   try {
-    const response = await appAxios.get(`/orders/order-by-username/${username}`);
+    const response = await appAxios.get(`${BASE_URL}/orders/order-by-username/${username}`);
     const data: Order[] = response.data;
     console.log(data);
     return data;

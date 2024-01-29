@@ -48,9 +48,7 @@ function Registration({}: RegistrationProps) {
   };
 
   useEffect(() => {
-    // Redirect user to login page if registration was successful
     if (success) navigate("/login");
-    // Redirect authenticated user to home screen
     if (userToken) navigate("/home");
   }, [navigate, userToken, success]);
 

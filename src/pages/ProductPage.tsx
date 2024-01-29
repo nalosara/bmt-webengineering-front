@@ -1,13 +1,13 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Order, Product } from "../utils/types";
-import { ProductService, OrderService } from "../services";
+import { Order, Product, User } from "../utils/types";
+import { ProductService, UserService } from "../services";
 import { Colors } from "../constants";
 import { Modal, Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { JwtPayload, jwtDecode } from "jwt-decode";
-import { useDeleteProduct } from "../hooks";
+import { useCreateOrder, useDeleteProduct, useUpdateProduct } from "../hooks";
 
 type Props = {};
 
@@ -17,7 +17,6 @@ interface CustomJwtPayload extends JwtPayload {
 
 const ProductPage = (props: Props) => {
   let authorities: string[] | undefined;
-  let decodedToken: CustomJwtPayload;
   const { id } = useParams<{ id?: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,9 +25,12 @@ const ProductPage = (props: Props) => {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [orderQuantity, setOrderQuantity] = useState<number>(1);
   const [orderAddress, setOrderAddress] = useState<string>("");
+  const [user, setUser] = useState<User | undefined>(undefined);
   const navigate = useNavigate();
 
   const deleteProduct = useDeleteProduct();
+  const createOrder = useCreateOrder();
+  const updateProduct = useUpdateProduct();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,22 +58,35 @@ const ProductPage = (props: Props) => {
 
     fetchData();
   }, [id]);
-  
+
   const userToken = localStorage.getItem("userToken");
 
-  if (userToken) {
-    try {
-      const decodedToken: CustomJwtPayload = jwtDecode(userToken);
-      authorities = decodedToken.authorities;
-      console.log("Decoded Token:", decodedToken);
-      console.log("Authorities: ", authorities);
-      console.log("username: ", decodedToken.sub);
-    } catch (error) {
-      console.error("Error decoding token:", error);
-    }
-  } else {
-    console.error("Token is null or undefined. Cannot decode.");
-  }
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (userToken) {
+        try {
+          const decodedToken: CustomJwtPayload = jwtDecode(userToken);
+          authorities = decodedToken.authorities;
+
+          const fetchedUser = await UserService.getUserByUsername(
+            decodedToken.sub || ""
+          );
+
+          if (fetchedUser !== null) {
+            setUser(fetchedUser);
+          } else {
+            console.error("User not found for the decoded token.");
+          }
+        } catch (error) {
+          console.error("Error decoding token or fetching user:", error);
+        }
+      } else {
+        console.error("Token is null or undefined. Cannot decode.");
+      }
+    };
+
+    fetchUser();
+  }, [userToken]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -81,20 +96,18 @@ const ProductPage = (props: Props) => {
     return <p>The requested product does not exist.</p>;
   }
 
-  const handleDeleteClick = async (id: string) => {
+  const handleDeleteClick = (id: string) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this product?"
     );
-    if(confirmDelete) {
+    if (confirmDelete) {
       try {
-        await deleteProduct.mutateAsync(id);
+        deleteProduct.mutate(id);
         navigate("/shop");
-
       } catch (error) {
         console.error("Error deleting order:", error);
       }
     }
-    
   };
 
   const handleEditClick = () => {
@@ -109,7 +122,6 @@ const ProductPage = (props: Props) => {
     e.preventDefault();
 
     try {
-      // Extract updated values from form fields
       const updatedName = (
         e.currentTarget.elements.namedItem("editName") as HTMLInputElement
       )?.value!;
@@ -134,7 +146,6 @@ const ProductPage = (props: Props) => {
           ?.value!
       );
 
-      // Check if any required field is missing or invalid
       if (
         !updatedName ||
         !updatedDescription ||
@@ -148,12 +159,10 @@ const ProductPage = (props: Props) => {
         return;
       }
 
-      // Add logic to handle form submission and update the product
       if (product) {
-        const updatedProduct = await ProductService.updateProduct(product);
+        const updatedProduct = await updateProduct.mutateAsync(product);
 
         if (updatedProduct) {
-          // Optionally, you can update the UI or perform other actions after updating
           console.log("Product updated successfully:", updatedProduct);
           toast.success("Product updated successfully!");
         } else {
@@ -162,21 +171,16 @@ const ProductPage = (props: Props) => {
             updatedProduct
           );
           toast.error("Error updating product. Please try again.");
-          // Handle the case where the updated product data is invalid
         }
       }
     } catch (error) {
-      // Handle errors (e.g., display an error message to the user)
       console.error("Error updating product:", error);
       toast.error("Error updating product. Please try again.");
     } finally {
-      setIsEditModalOpen(false); // Close the modal after submission or in case of an error
+      setIsEditModalOpen(false);
     }
   };
 
-  {
-    /* Order modal */
-  }
   const handleOrderModalOpen = () => {
     setIsOrderModalOpen(true);
   };
@@ -196,31 +200,32 @@ const ProductPage = (props: Props) => {
 
   const handlePlaceOrder = async () => {
     try {
-      if (userToken && authorities?.includes("MEMBER") && product) {
+      if (user && user.userType.includes("MEMBER") && product) {
+        if (orderQuantity > product.quantityInStock) {
+          toast.error("Cannot order more items than available in stock!");
+          return;
+        }
         const order: Order = {
           id: "",
-          userId: decodedToken.sub || "",
-          username: decodedToken.sub || "",
+          userId: user?.id || "",
+          username: user?.username || "",
           product: product,
           quantity: orderQuantity,
           address: orderAddress,
           orderDate: new Date(),
         };
 
-        // Call OrderService to add the order
-        const addedOrder = await OrderService.addOrder(order);
+        const addedOrder = await createOrder.mutateAsync(order);
 
         if (addedOrder) {
-          console.log("Order added successfully:", addedOrder);
-
           const updatedProduct = {
             ...product,
             quantityInStock: product.quantityInStock - orderQuantity,
           };
-          await ProductService.updateProduct(updatedProduct);
+          await updateProduct.mutateAsync(updatedProduct);
           toast.success("Order placed successfully!");
           handleOrderModalClose();
-          navigate("/shop"); // Close the modal after placing the order
+          navigate("/shop");
         } else {
           console.error("Invalid added order data received:", addedOrder);
           toast.error("Error placing order. Please try again.");
@@ -269,7 +274,7 @@ const ProductPage = (props: Props) => {
               <strong>Price: </strong> ${product.price}
             </li>
           </p>
-          {userToken && authorities?.includes("MEMBER") && (
+          {userToken && user?.userType.includes("MEMBER") && (
             <>
               <a
                 className="btn btn-primary"
@@ -292,9 +297,14 @@ const ProductPage = (props: Props) => {
           )}
         </div>
       </div>
-      {userToken && authorities?.includes("ADMIN") && (
+      {userToken && user?.userType.includes("ADMIN") && (
         <div className="vw-100">
-          <a className="btn btn-primary btn-danger" onClick={() => { handleDeleteClick(product.id) }}>
+          <a
+            className="btn btn-primary btn-danger"
+            onClick={() => {
+              handleDeleteClick(product.id);
+            }}
+          >
             <i className="bi bi-trash"></i>
           </a>
           <a
@@ -309,7 +319,6 @@ const ProductPage = (props: Props) => {
         </div>
       )}
 
-      {/* Edit modal */}
       <Modal show={isEditModalOpen} onHide={handleEditModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Product</Modal.Title>
@@ -376,7 +385,6 @@ const ProductPage = (props: Props) => {
         </Modal.Body>
       </Modal>
 
-      {/* Order Modal */}
       <Modal show={isOrderModalOpen} onHide={handleOrderModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Place Order</Modal.Title>
@@ -391,6 +399,11 @@ const ProductPage = (props: Props) => {
                 onChange={handleQuantityChange}
               />
             </Form.Group>
+            {orderQuantity > product.quantityInStock && (
+              <div style={{ color: "red" }}>
+                Cannot order more items than available in stock! There is only {product.quantityInStock} products left!
+              </div>
+            )}
             <Form.Group controlId="orderAddress">
               <Form.Label>Address:</Form.Label>
               <Form.Control

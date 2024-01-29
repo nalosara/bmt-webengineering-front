@@ -1,6 +1,5 @@
 import { Colors } from "../../constants";
 import { Contact } from "../../utils/types";
-import { ContactService } from "../../services";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { jwtDecode } from 'jwt-decode';
@@ -23,16 +22,20 @@ const ContactCard = (props: ContactProps) => {
 
   const handleSubmit = (values: Contact) => {
     setSubmitting(true);
-    console.log("THE VALUES ARE ", values);
     createContact.mutate(values, {
       onSuccess: () => {
         setSubmitting(false);
-        toast.success("Message sent successfully!")
+        toast.success("Message sent successfully!");
+        setContact({
+          email: "",
+          subject: "",
+          message: "",
+          username: "",
+        });
       },
       onError: (error) => {
         setSubmitting(false);
-        toast.error("Message sent successfully!")
-        //error.handleGlobally && error.handleGlobally();
+        toast.error("Sending message failed!")
       }
     });
   };
@@ -41,11 +44,7 @@ const ContactCard = (props: ContactProps) => {
     if (userToken) {
       try {
         const decodedToken = jwtDecode(userToken);
-        console.log("Decoded Token:", decodedToken);
-  
-        // Access custom claims, e.g., username
         const username = decodedToken.sub;
-        console.log("Username:", username);
   
       } catch (error) {
         console.error("Error decoding token:", error);
@@ -77,13 +76,15 @@ const ContactCard = (props: ContactProps) => {
         >
           <div className="row">
             <div className="form-group col-md-6 mb-3">
-              <label htmlFor="inputname">Name</label>
+              <label htmlFor="inputname">Username</label>
               <input
                 type="text"
                 className="form-control mt-1"
-                id="name"
-                name="name"
-                placeholder="Name"
+                id="username"
+                name="username"
+                placeholder="Username"
+                value={contact.username}
+                required
                 onChange={handleInputChange}
               />
             </div>
@@ -95,6 +96,8 @@ const ContactCard = (props: ContactProps) => {
                 id="email"
                 name="email"
                 placeholder="Email"
+                value={contact.email}
+                required
                 onChange={handleInputChange}
               />
             </div>
@@ -107,6 +110,8 @@ const ContactCard = (props: ContactProps) => {
               id="subject"
               name="subject"
               placeholder="Subject"
+              value={contact.subject}
+              required
               onChange={handleInputChange}
             />
           </div>
@@ -117,6 +122,8 @@ const ContactCard = (props: ContactProps) => {
               id="message"
               name="message"
               placeholder="Message"
+              value={contact.message}
+              required
               onChange={handleInputChange}
             ></textarea>
           </div>

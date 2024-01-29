@@ -23,7 +23,6 @@ const addProduct = async (product: Product): Promise<Product> => {
     .post(`${BASE_URL}/products/add-product`, product)
     .then((response) => {
       const data = response.data;
-      console.log("Product ", data, " is added!");
 
       return data;
     });

@@ -6,7 +6,7 @@ const useUpdateUser = () => {
     const queryClient = useQueryClient();
     return useMutation((data: User) => UserService.updateUser(data), {
         onSuccess: () => {
-            queryClient.invalidateQueries('products');
+            queryClient.invalidateQueries('users');
         },
     });
 };

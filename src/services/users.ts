@@ -12,9 +12,8 @@ const getUsers = async (): Promise<User[]> => {
 
 const getUserByUsername = async (username: string): Promise<User | null> => {
   try {
-    const response = await appAxios.get(`${BASE_URL}/user-by-username/${username}`);
+    const response = await appAxios.get(`${BASE_URL}/users/user-by-username/${username}`);
     const data: User = response.data;
-    console.log('User data:', data);
     return data;
   } catch (error) {
     if (error) {
@@ -26,7 +25,6 @@ const getUserByUsername = async (username: string): Promise<User | null> => {
     throw error;
   }
 };
-
 
 const updateUser = async (data: User) => {
   try {

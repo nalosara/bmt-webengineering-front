@@ -1,7 +1,5 @@
 export const BASE_URL = 'http://localhost:8080/api'
 
-export const SECRET_KEY = 'QTcxvcLS0IR3JFLLkvMOBvXCde7DB8lKCnMMGOyI59s'
-
 export enum Colors {
   "primary" = "#004AAD",
   "secondary" = "#38B6FF",

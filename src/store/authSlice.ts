@@ -12,7 +12,6 @@ export const registerUser = createAsyncThunk(
                data,
            )
        } catch (error: any) {
-           // return custom error message from backend if present
            if (error.response && error.response.data.message) {
                return rejectWithValue(error.response.data.message)
            } else {
@@ -48,10 +47,10 @@ const userToken = localStorage.getItem('userToken')
 
 const initialState = {
    loading: false,
-   userInfo: null, // for user the object
-   userToken, // for storing the JWT
+   userInfo: null, 
+   userToken, 
    error: null,
-   success: false, // for monitoring the registration process.
+   success: false, 
 }
 
 const authSlice = createSlice({
@@ -59,7 +58,7 @@ const authSlice = createSlice({
    initialState,
    reducers: {
       logout: (state) => {
-          localStorage.removeItem('userToken') // deletes token from storage
+          localStorage.removeItem('userToken')
           state.loading = false
           state.userInfo = null
           state.userToken = null
@@ -67,7 +66,6 @@ const authSlice = createSlice({
       }
   },
    extraReducers: (builder) => {
-      // registration
       builder.addCase(registerUser.pending, (state) => {
           state.loading = true
           state.error = null
@@ -80,7 +78,7 @@ const authSlice = createSlice({
           state.loading = false
           state.error = action.payload
       })
-      // login
+
       builder.addCase(login.pending, (state) => {
          state.loading = true
          state.error = null
