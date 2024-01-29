@@ -123,7 +123,6 @@ const ProductList = ({}: ProductListProps) => {
       console.log("WebSocket connection established.");
     },
     onMessage: (m) => {
-      toast.success("getting a new message");
       try {
         const newMsg = JSON.parse(m.data);
         console.log(newMsg);
@@ -136,6 +135,9 @@ const ProductList = ({}: ProductListProps) => {
       } catch (error) {
         console.error("Error parsing JSON:", error);
       }
+    },
+    onError: (e) => {
+      console.error("error ", e);
     }
     
   });
