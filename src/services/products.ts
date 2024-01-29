@@ -1,9 +1,8 @@
 import appAxios from "./appAxios";
 import { Product } from "../utils/types";
-import { BASE_URL } from "../constants";
 
 const getProducts = async (): Promise<Product[]> => {
-  return appAxios.get(`${BASE_URL}/products/`).then((response) => {
+  return appAxios.get(`/products/`).then((response) => {
     const data = response.data;
     console.log(data);
     return data;
@@ -11,7 +10,7 @@ const getProducts = async (): Promise<Product[]> => {
 };
 
 const getProductById = async (id: string): Promise<Product> => {
-  return appAxios.get(`${BASE_URL}/products/${id}`).then((response) => {
+  return appAxios.get(`/products/${id}`).then((response) => {
     const data = response.data;
     console.log(data);
     return data;
@@ -20,7 +19,7 @@ const getProductById = async (id: string): Promise<Product> => {
 
 const addProduct = async (product: Product): Promise<Product> => {
   return appAxios
-    .post(`${BASE_URL}/products/add-product`, product)
+    .post(`/products/add-product`, product)
     .then((response) => {
       const data = response.data;
 
@@ -30,7 +29,7 @@ const addProduct = async (product: Product): Promise<Product> => {
 
 const updateProduct = async (data: Product) => {
   try {
-    const response = await appAxios.put(`${BASE_URL}/products/${data.id}`, data);
+    const response = await appAxios.put(`/products/${data.id}`, data);
     return response.data;
   } catch (error) {
     console.error('Error updating product:', error);
@@ -39,7 +38,7 @@ const updateProduct = async (data: Product) => {
 };
 
 const deleteProductById = async (id: string) => {
-  return appAxios.delete(`${BASE_URL}/products/${id}`).then((response) => {
+  return appAxios.delete(`/products/${id}`).then((response) => {
     const { data } = response;
     return data;
   });

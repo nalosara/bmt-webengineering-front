@@ -1,9 +1,8 @@
 import appAxios from "./appAxios";
 import { Order } from "../utils/types";
-import { BASE_URL } from "../constants";
 
 const getOrders = async (): Promise<Order[]> => {
-  return appAxios.get(`${BASE_URL}/orders/`).then((response) => {
+  return appAxios.get(`/orders/`).then((response) => {
     const data = response.data;
     console.log(data);
     return data;
@@ -12,7 +11,7 @@ const getOrders = async (): Promise<Order[]> => {
 
 const getOrdersByUserId = async (userId: string): Promise<Order[]> => {
   try {
-    const response = await appAxios.get(`${BASE_URL}/orders/order-by-id/${userId}`);
+    const response = await appAxios.get(`/orders/order-by-id/${userId}`);
     const data = response.data;
     console.log(data);
     return data;
@@ -24,7 +23,7 @@ const getOrdersByUserId = async (userId: string): Promise<Order[]> => {
 
 const getOrdersByUsername = async (username: string): Promise<Order[]> => {
   try {
-    const response = await appAxios.get(`${BASE_URL}/orders/order-by-username/${username}`);
+    const response = await appAxios.get(`/orders/order-by-username/${username}`);
     const data: Order[] = response.data;
     console.log(data);
     return data;
@@ -36,7 +35,7 @@ const getOrdersByUsername = async (username: string): Promise<Order[]> => {
 
 const addOrder = async (order: Order): Promise<Order> => {
   return appAxios
-    .post(`${BASE_URL}/orders/add-order`, order)
+    .post(`/orders/add-order`, order)
     .then((response) => {
       const data = response.data;
       console.log("Order ", data, " is added!");
@@ -46,7 +45,7 @@ const addOrder = async (order: Order): Promise<Order> => {
 };
 
 const deleteOrderById = async (id: string) => {
-  return appAxios.delete(`${BASE_URL}/orders/${id}`).then((response) => {
+  return appAxios.delete(`/orders/${id}`).then((response) => {
     const { data } = response;
     return data;
   });
